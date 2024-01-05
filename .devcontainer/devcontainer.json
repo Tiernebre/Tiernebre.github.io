@@ -1,0 +1,16 @@
+{
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:20",
+	"forwardPorts": [4321],
+  // Configure tool-specific properties.
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"robbowen.synthwave-vscode",
+        "astro-build.astro-vscode"
+			],
+			"settings": {
+				"workbench.colorTheme": "SynthWave '84"
+			}
+		}
+	},
+}

@@ -1,0 +1,173 @@
+---
+import headerPhoto from '../images/header_photo.png'
+import headshotPhoto from '../images/head_shot.jpeg'
+
+const currentYear = new Date().getFullYear()
+---
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" href="/favicon.ico" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>Brendan Tierney - Software Engineer</title>
+	</head>
+	<body>
+		<header class="px-4 py-8 border-slate-300 border-b-2">
+			<div class="container mx-auto flex flex-row justify-between">
+				<div>
+					<a
+						class="cursor-pointer text-xl font-bold p-4 hover:bg-slate-50 rounded-lg"
+						href="/"
+					>
+						Brendan Tierney
+					</a>
+				</div>
+			</div>
+		</header>
+		<main>
+			<section class="px-4 py-16 bg-teal-100">
+				<div
+					class="container px-4 mx-auto flex flex-col sm:flex-row justify-between items-center"
+				>
+					<div class="mb-8 sm:mb-0 order-1 sm:order-0">
+						<h1 class="text-l text-center sm:text-2xl sm:text-left">
+							Hi 👋! <strong>I'm a software engineer</strong> passionate about building
+							<strong>accessible</strong> and{" "}
+							<strong>scalable&nbsp;software</strong>!
+						</h1>
+					</div>
+					<img
+						src={headerPhoto.src}
+						class="mb-16 order-0 sm:ml-16 sm:mb-0 sm:order-1"
+						alt="Image of Brendan Tierney"
+					/>
+				</div>
+			</section>
+		</main>
+		<section class="px-4 py-16">
+			<div class="container px-4 mx-auto">
+				<div class="flex flex-col sm:flex-row sm:space-x-8 items-center">
+					<div>
+						<img
+							src={headshotPhoto.src}
+							alt="A potrait photo showing the face of Brendan Tierney"
+							class="rounded-lg mb-16 sm:mb-0"
+						/>
+					</div>
+					<div class="w-full space-y-6 text-center sm:text-left">
+						<p>
+							I've been obsessed with computers and technology throughout my
+							entire life. I used to create video game web forums back before
+							2010 using VBulletin which is how I got my start in the web. From
+							there I learned about HTML, CSS, and JavaScript and have had a
+							love for technology, programming, and web development ever since.
+						</p>
+						<p>
+							I graduated with a Bachelor of Science in Computer Science from
+							Boise State University and found out that my love of technology
+							was <span class="italics">also</span>{" "}
+							<strong>
+								a love of solving complex, challenging, and
+								interesting&nbsp;problems
+							</strong>
+							.
+						</p>
+						<p>
+							Since graduating, I've been working as a software engineer helping
+							companies and organizations solve challenges to help their
+							business grow and scale. I also have enjoyed leading, teaching,
+							supporting, and mentoring other engineers and serving as a leader
+							across the organizations I have been a part&nbsp;of.
+						</p>
+						<p>
+							Besides programming, I enjoy working with even more technology!
+							This past year I setup a home server to serve as a file storage
+							backup and media hoster on my network. I also enjoy cycling,
+							playing video games, and occasionally collecting video games and
+							Pokémon&nbsp;cards.
+						</p>
+					</div>
+				</div>
+			</div>
+		</section>
+		<section class="px-4 py-16 bg-pink-100">
+			<div class="container px-4 mx-auto space-y-8">
+				<p>
+					I have worked with some really cool and awesome technologies
+					throughout my career. I have experience in:
+				</p>
+				<div class="flex flex-col space-y-8 sm:flex-row sm:space-y-0">
+					<div class="w-full">
+						<h3 class="text-lg font-bold">Front-End</h3>
+						<ul class="list-disc ml-8">
+							<li>HTML / HTML5 / Semantic HTML</li>
+							<li>CSS / LESS / SCSS / SASS / CSS3</li>
+							<li>JavaScript / TypeScript / ECMAScript (ES5+)</li>
+							<li>React</li>
+							<li>Angular</li>
+							<li>Vue (2 & 3)</li>
+							<li>WCAG 2.1 / Web Accessibility Practices</li>
+							<li>State Management: Redux, Vuex, Context, React Hooks</li>
+						</ul>
+					</div>
+					<div class="w-full">
+						<h3 class="text-lg font-bold">Back-End</h3>
+						<ul class="list-disc ml-8">
+							<li>Java / Java Spring / Spring Boot</li>
+							<li>Node.js / Express / Koa</li>
+							<li>RESTful APIs / GraphQL</li>
+							<li>
+								Amazon Web Services (Lambda, EC2, ECS, S3, CloudFront, RDS, IAM)
+							</li>
+							<li>Relational Databases: SQL, PostgreSQL</li>
+							<li>Caching: Redis / DynamoDB</li>
+							<li>CI/CD Automation: GitHub Actions, Travis CI, GitLab</li>
+							<li>Server Management: Linux / Arch Linux / Ubuntu</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</section>
+		<section class="px-4 py-16">
+			<div
+				class="container px-4 mx-auto flex flex-col space-y-8 justify-center items-center"
+			>
+				<h4 class="text-xl font-bold text-center">
+					Are you looking for a software engineer to solve tough challenges for
+					your business?
+				</h4>
+				<a
+					class="px-8 py-4 text-xl rounded-lg bg-teal-300 hover:bg-teal-400 cursor-pointer"
+					href="mailto:tiernebre@gmail.com"
+				>
+					Email Me!
+				</a>
+			</div>
+		</section>
+	</body>
+	<footer
+		class="py-24 sm:py-12 px-12 mt-auto flex flex-col items-center justify-center border-t-2 border-teal-200"
+	>
+		<p>&copy; {currentYear} Brendan Tierney</p>
+		<ul class="list-none p-0 flex">
+			<li class="space-x-5">
+				<a
+					class="text-blue-600 visited:text-purple-600 underline"
+					href="https://github.com/Tiernebre"
+					target="_blank"
+				>
+					GitHub
+				</a>
+				<a
+					class="text-blue-600 visited:text-purple-600 underline"
+					href="https://www.linkedin.com/in/tierney-brendan/"
+					target="_blank"
+				>
+					LinkedIn
+				</a>
+			</li>
+		</ul>
+	</footer>
+</html>
