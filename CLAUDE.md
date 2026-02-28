@@ -22,3 +22,9 @@ No linting or testing frameworks are configured.
 - **Layouts**: `src/layouts/Layout.astro` wraps pages using `<slot />`
 - **Components**: Reusable `.astro` components in `src/components/`
 - **Static assets**: `public/` for files served as-is, `src/assets/` for processed assets
+
+## Git
+
+- Follow the [Conventional Commits](./.context/meaningful_git_commit_messages.md) spec whenever you commit Git changes.
+
+
