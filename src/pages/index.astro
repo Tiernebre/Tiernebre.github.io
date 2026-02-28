@@ -1,11 +1,44 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
 ---
 
 <Layout>
-	<Welcome />
+	<main>
+		<h1>Under Construction</h1>
+		<p>Something is being built here. Check back soon!</p>
+		<p>In the meantime, find me on <a href="https://www.linkedin.com/in/tierney-brendan/" target="_blank" rel="noopener noreferrer">LinkedIn</a>.</p>
+	</main>
 </Layout>
+
+<style>
+	main {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		min-height: 100vh;
+		font-family: sans-serif;
+		text-align: center;
+		padding: 2rem;
+	}
+
+	h1 {
+		font-size: 2.5rem;
+		margin-bottom: 1rem;
+	}
+
+	p {
+		font-size: 1.1rem;
+		color: #555;
+		margin: 0.5rem 0;
+	}
+
+	a {
+		color: #0a66c2;
+		text-decoration: none;
+	}
+
+	a:hover {
+		text-decoration: underline;
+	}
+</style>
