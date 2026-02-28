@@ -26,5 +26,3 @@ No linting or testing frameworks are configured.
 ## Git
 
 - Follow the [Conventional Commits](./.context/meaningful_git_commit_messages.md) spec whenever you commit Git changes.
-
-
