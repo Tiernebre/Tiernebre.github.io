@@ -11,8 +11,10 @@ Personal portfolio/website built with Astro 5. Hosted via GitHub Pages (Tiernebr
 - `npm run dev` — Start dev server at localhost:4321
 - `npm run build` — Production build to `./dist/`
 - `npm run preview` — Preview production build locally
-
-No linting or testing frameworks are configured.
+- `npm run lint` — Run ESLint
+- `npm run lint:fix` — Run ESLint with auto-fix
+- `npm run format` — Format files with Prettier
+- `npm run format:check` — Check formatting with Prettier
 
 ## Architecture
 
@@ -22,7 +24,3 @@ No linting or testing frameworks are configured.
 - **Layouts**: `src/layouts/Layout.astro` wraps pages using `<slot />`
 - **Components**: Reusable `.astro` components in `src/components/`
 - **Static assets**: `public/` for files served as-is, `src/assets/` for processed assets
-
-## Git
-
-- Follow the [Conventional Commits](./.context/meaningful_git_commit_messages.md) spec whenever you commit Git changes.

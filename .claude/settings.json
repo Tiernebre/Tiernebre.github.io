@@ -23,6 +23,16 @@
           }
         ]
       }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if [ -n \"$(git status --porcelain)\" ]; then git add -A && git commit -m \"chore: auto-commit on task completion\" && git push; fi"
+          }
+        ]
+      }
     ]
   }
 }
