@@ -25,6 +25,3 @@ Personal portfolio/website built with Astro 5. Hosted via GitHub Pages (Tiernebr
 - **Components**: Reusable `.astro` components in `src/components/`
 - **Static assets**: `public/` for files served as-is, `src/assets/` for processed assets
 
-## Tasks / Prompts
-
-Whenever you successfully complete a task, ask the user "Should I commit and push this change?". If yes, write a commit message, commit, and then push to the branch you're working in.
