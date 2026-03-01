@@ -26,7 +26,10 @@ const total_time_hours = Math.floor(total_duration_minutes / 60);
 const total_time_minutes = total_duration_minutes % 60;
 const total_time = `${total_time_hours}h ${total_time_minutes}m`;
 
-const progress_pct = ((total_distance_raw / CHALLENGE_GOAL_MILES) * 100).toFixed(1);
+const progress_pct = (
+  (total_distance_raw / CHALLENGE_GOAL_MILES) *
+  100
+).toFixed(1);
 
 const sorted_by_date = [...entries].sort(
   (a, b) => a.data.date.getTime() - b.data.date.getTime(),
@@ -55,9 +58,7 @@ const longest_walk_entry = entries.reduce((max, e) =>
 const longest_walk = `${longest_walk_entry.data.distance_miles.toFixed(1)} mi — ${longest_walk_entry.data.title}`;
 
 const avg_distance =
-  entries.length > 0
-    ? (total_distance_raw / entries.length).toFixed(1)
-    : "0.0";
+  entries.length > 0 ? (total_distance_raw / entries.length).toFixed(1) : "0.0";
 
 const all_neighborhoods = entries.flatMap((e) => e.data.neighborhoods);
 const neighborhoods_visited = new Set(all_neighborhoods).size;
@@ -75,7 +76,9 @@ const neighborhoods_visited = new Set(all_neighborhoods).size;
     <section class="progress-section">
       <div class="progress-label">
         <span class="progress-pct">{progress_pct}% complete</span>
-        <span class="progress-miles">{total_distance} / {CHALLENGE_GOAL_MILES} mi</span>
+        <span class="progress-miles"
+          >{total_distance} / {CHALLENGE_GOAL_MILES} mi</span
+        >
       </div>
       <div class="progress-bar-track">
         <div
@@ -119,11 +122,7 @@ const neighborhoods_visited = new Set(all_neighborhoods).size;
         </div>
         <div class="stat-card">
           <span class="stat-value">
-            {
-              most_recent_walk
-                ? formatDate(most_recent_walk.data.date)
-                : "N/A"
-            }
+            {most_recent_walk ? formatDate(most_recent_walk.data.date) : "N/A"}
           </span>
           <span class="stat-label">Most Recent Walk</span>
         </div>
