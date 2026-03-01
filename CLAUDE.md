@@ -26,6 +26,10 @@ Personal portfolio/website built with Astro 5. Hosted via GitHub Pages (Tiernebr
 - **Components**: Reusable `.astro` components in `src/components/`
 - **Static assets**: `public/` for files served as-is, `src/assets/` for processed assets
 
+## Writing code
+
+- Respect the formatting for all files types (markdown, astro, TS/JS, HTML/CSS, etc..). Leverage `npm run format` and `npm run format:check` to format your code per the project's spec.
+
 ## Git / GitHub
 
 - When creating pull requests, don't write a `Test plan` section.
