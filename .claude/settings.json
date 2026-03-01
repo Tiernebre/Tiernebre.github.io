@@ -20,6 +20,10 @@
           {
             "type": "command",
             "command": "FILE=$(jq -r '.tool_input.file_path') && npx prettier --write \"$FILE\" && npx eslint --fix \"$FILE\""
+          },
+          {
+            "type": "command",
+            "command": "npm test"
           }
         ]
       }
