@@ -1,0 +1,260 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import ManhattanMap from "../../components/ManhattanMap.astro";
+import { getWalkGeoJsonFeatures } from "../../lib/gpx";
+
+const CHALLENGE_GOAL_MILES = 1300;
+
+const entries = await getCollection("manhattan-challenge");
+const features = getWalkGeoJsonFeatures();
+
+// Compute stats
+const total_walks = entries.length;
+
+const total_distance_raw = entries.reduce(
+  (sum, e) => sum + e.data.distance_miles,
+  0,
+);
+const total_distance = total_distance_raw.toFixed(1);
+
+const total_duration_minutes = entries.reduce(
+  (sum, e) => sum + e.data.duration_minutes,
+  0,
+);
+const total_time_hours = Math.floor(total_duration_minutes / 60);
+const total_time_minutes = total_duration_minutes % 60;
+const total_time = `${total_time_hours}h ${total_time_minutes}m`;
+
+const progress_pct = (
+  (total_distance_raw / CHALLENGE_GOAL_MILES) *
+  100
+).toFixed(1);
+
+const sorted_by_date = [...entries].sort(
+  (a, b) => a.data.date.getTime() - b.data.date.getTime(),
+);
+const earliest = sorted_by_date[0];
+const most_recent = sorted_by_date[sorted_by_date.length - 1];
+
+const formatDate = (d: Date) =>
+  d.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    timeZone: "UTC",
+  });
+
+const project_span =
+  entries.length > 0
+    ? `${formatDate(earliest.data.date)} – ${formatDate(most_recent.data.date)}`
+    : "N/A";
+
+const most_recent_walk = most_recent;
+
+const longest_walk_entry = entries.reduce((max, e) =>
+  e.data.distance_miles > max.data.distance_miles ? e : max,
+);
+const longest_walk = `${longest_walk_entry.data.distance_miles.toFixed(1)} mi — ${longest_walk_entry.data.title}`;
+
+const avg_distance =
+  entries.length > 0 ? (total_distance_raw / entries.length).toFixed(1) : "0.0";
+
+const all_neighborhoods = entries.flatMap((e) => e.data.neighborhoods);
+const neighborhoods_visited = new Set(all_neighborhoods).size;
+---
+
+<Layout>
+  <main>
+    <header class="page-header">
+      <h1>Manhattan Challenge</h1>
+      <p class="subtitle">
+        Walking every block of Manhattan — tracking progress one walk at a time.
+      </p>
+    </header>
+
+    <section class="progress-section">
+      <div class="progress-label">
+        <span class="progress-pct">{progress_pct}% complete</span>
+        <span class="progress-miles"
+          >{total_distance} / {CHALLENGE_GOAL_MILES} mi</span
+        >
+      </div>
+      <div class="progress-bar-track">
+        <div
+          class="progress-bar-fill"
+          style={`width: ${Math.min(Number(progress_pct), 100)}%`}
+        >
+        </div>
+      </div>
+    </section>
+
+    <section class="stats-section">
+      <h2>Stats</h2>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <span class="stat-value">{total_distance} mi</span>
+          <span class="stat-label">Total Distance</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value">{total_time}</span>
+          <span class="stat-label">Total Time</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value">{total_walks}</span>
+          <span class="stat-label">Total Walks</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value">{project_span}</span>
+          <span class="stat-label">Project Span</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value">{longest_walk}</span>
+          <span class="stat-label">Longest Walk</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value">{avg_distance} mi</span>
+          <span class="stat-label">Avg Distance</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value">{neighborhoods_visited}</span>
+          <span class="stat-label">Neighborhoods Visited</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value">
+            {most_recent_walk ? formatDate(most_recent_walk.data.date) : "N/A"}
+          </span>
+          <span class="stat-label">Most Recent Walk</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="map-section">
+      <h2>Walk Map</h2>
+      <div class="map-container">
+        <ManhattanMap features={features} />
+      </div>
+    </section>
+  </main>
+</Layout>
+
+<style>
+  main {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+    font-family: sans-serif;
+    color: #222;
+  }
+
+  .page-header {
+    margin-bottom: 2rem;
+  }
+
+  h1 {
+    font-size: 2.25rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem;
+  }
+
+  h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0 0 1rem;
+    color: #444;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+    color: #555;
+    margin: 0;
+  }
+
+  /* Progress */
+  .progress-section {
+    margin-bottom: 2.5rem;
+  }
+
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 0.5rem;
+  }
+
+  .progress-pct {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: #e63946;
+  }
+
+  .progress-miles {
+    font-size: 0.875rem;
+    color: #666;
+  }
+
+  .progress-bar-track {
+    width: 100%;
+    height: 14px;
+    background: #e9ecef;
+    border-radius: 999px;
+    overflow: hidden;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    background: #e63946;
+    border-radius: 999px;
+    transition: width 0.4s ease;
+    min-width: 2px;
+  }
+
+  /* Stats */
+  .stats-section {
+    margin-bottom: 2.5rem;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1rem;
+  }
+
+  .stat-card {
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .stat-value {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: #111;
+    line-height: 1.3;
+  }
+
+  .stat-label {
+    font-size: 0.75rem;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-weight: 500;
+  }
+
+  /* Map */
+  .map-section {
+    margin-bottom: 2rem;
+  }
+
+  .map-container {
+    width: 100%;
+    height: 560px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #dee2e6;
+  }
+</style>
