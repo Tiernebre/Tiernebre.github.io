@@ -33,7 +33,7 @@ const featuresJson = JSON.stringify(features);
 
   const features = JSON.parse(mapEl.dataset.features ?? "[]");
 
-  const map = L.map("manhattan-map").setView([40.7831, -73.9712], 12);
+  const map = L.map("manhattan-map");
 
   L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
     maxZoom: 19,
@@ -42,6 +42,7 @@ const featuresJson = JSON.stringify(features);
   }).addTo(map);
 
   const polylineColor = "#e63946";
+  const allLatLngs: [number, number][] = [];
 
   features.forEach(function (feature) {
     if (
@@ -53,9 +54,13 @@ const featuresJson = JSON.stringify(features);
     }
 
     // Leaflet expects [lat, lng]; GeoJSON uses [lng, lat]
-    const latLngs = feature.geometry.coordinates.map(function (coord) {
-      return [coord[1], coord[0]];
-    });
+    const latLngs: [number, number][] = feature.geometry.coordinates.map(
+      function (coord) {
+        return [coord[1], coord[0]];
+      },
+    );
+
+    allLatLngs.push(...latLngs);
 
     const polyline = L.polyline(latLngs, {
       color: polylineColor,
@@ -87,6 +92,12 @@ const featuresJson = JSON.stringify(features);
         .openOn(map);
     });
   });
+
+  if (allLatLngs.length > 0) {
+    map.fitBounds(allLatLngs, { padding: [20, 20] });
+  } else {
+    map.setView([40.7831, -73.9712], 12);
+  }
 </script>
 
 <style>
