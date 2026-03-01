@@ -1,5 +1,8 @@
 import "dotenv/config";
+import crypto from "node:crypto";
+import { exec } from "node:child_process";
 import fs from "node:fs";
+import http from "node:http";
 import path from "node:path";
 
 // ---------------------------------------------------------------------------
@@ -8,6 +11,7 @@ import path from "node:path";
 
 interface TokenResponse {
   access_token: string;
+  refresh_token: string;
 }
 
 interface StravaActivity {
@@ -49,13 +53,161 @@ function getRequiredEnv(name: string): string {
 
 const STRAVA_CLIENT_ID = getRequiredEnv("STRAVA_CLIENT_ID");
 const STRAVA_CLIENT_SECRET = getRequiredEnv("STRAVA_CLIENT_SECRET");
-const STRAVA_REFRESH_TOKEN = getRequiredEnv("STRAVA_REFRESH_TOKEN");
+// STRAVA_REFRESH_TOKEN is optional — obtained interactively if absent or invalid
+
+// ---------------------------------------------------------------------------
+// OAuth setup helpers
+// ---------------------------------------------------------------------------
+
+const OAUTH_PORT = 8000;
+const OAUTH_REDIRECT_URI = `http://localhost:${OAUTH_PORT}/callback`;
+
+function openBrowser(url: string): void {
+  const cmd =
+    process.platform === "darwin"
+      ? "open"
+      : process.platform === "win32"
+        ? "start"
+        : "xdg-open";
+  exec(`${cmd} "${url}"`);
+}
+
+function buildAuthUrl(state: string): string {
+  const params = new URLSearchParams({
+    client_id: STRAVA_CLIENT_ID,
+    redirect_uri: OAUTH_REDIRECT_URI,
+    response_type: "code",
+    approval_prompt: "auto",
+    scope: "activity:read_all",
+    state,
+  });
+  return `https://www.strava.com/oauth/authorize?${params}`;
+}
+
+async function waitForOAuthCallback(expectedState: string): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const timeout = setTimeout(() => {
+      server.close();
+      reject(new Error("OAuth callback timed out after 2 minutes."));
+    }, 120_000);
+
+    const server = http.createServer((req, res) => {
+      const url = new URL(req.url ?? "/", `http://localhost:${OAUTH_PORT}`);
+
+      if (url.pathname !== "/callback") {
+        res.writeHead(404);
+        res.end("Not found");
+        return;
+      }
+
+      const code = url.searchParams.get("code");
+      const state = url.searchParams.get("state");
+      const error = url.searchParams.get("error");
+
+      if (error) {
+        res.writeHead(400, { "Content-Type": "text/html" });
+        res.end(
+          `<html><body><h1>Authorization failed</h1><p>${error}</p></body></html>`,
+        );
+        clearTimeout(timeout);
+        server.close();
+        reject(new Error(`OAuth authorization error: ${error}`));
+        return;
+      }
+
+      if (!code || state !== expectedState) {
+        res.writeHead(400, { "Content-Type": "text/html" });
+        res.end(`<html><body><h1>Invalid callback</h1></body></html>`);
+        clearTimeout(timeout);
+        server.close();
+        reject(
+          new Error("Invalid OAuth callback: missing code or state mismatch."),
+        );
+        return;
+      }
+
+      res.writeHead(200, { "Content-Type": "text/html" });
+      res.end(
+        `<html><body><h1>Authorization successful!</h1><p>You can close this tab.</p></body></html>`,
+      );
+      clearTimeout(timeout);
+      server.close();
+      resolve(code);
+    });
+
+    server.listen(OAUTH_PORT);
+  });
+}
+
+async function exchangeCodeForToken(code: string): Promise<string> {
+  const response = await fetch("https://www.strava.com/oauth/token", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      client_id: STRAVA_CLIENT_ID,
+      client_secret: STRAVA_CLIENT_SECRET,
+      code,
+      grant_type: "authorization_code",
+    }),
+  });
+
+  if (!response.ok) {
+    const body = await response.text();
+    throw new Error(`Token exchange failed (${response.status}): ${body}`);
+  }
+
+  const data = (await response.json()) as TokenResponse;
+  return data.refresh_token;
+}
+
+function saveRefreshTokenToEnv(refreshToken: string): void {
+  const envPath = path.resolve(process.cwd(), ".env");
+
+  let content = "";
+  if (fs.existsSync(envPath)) {
+    content = fs.readFileSync(envPath, "utf-8");
+  }
+
+  const tokenLine = `STRAVA_REFRESH_TOKEN=${refreshToken}`;
+  if (/^STRAVA_REFRESH_TOKEN=/m.test(content)) {
+    content = content.replace(/^STRAVA_REFRESH_TOKEN=.*/m, tokenLine);
+  } else {
+    content = content.trimEnd() + (content ? "\n" : "") + tokenLine + "\n";
+  }
+
+  fs.writeFileSync(envPath, content, "utf-8");
+  console.log("Refresh token saved to .env");
+}
+
+async function interactiveLogin(): Promise<string> {
+  console.log("\nStrava authorization required.");
+  console.log(
+    `Ensure ${OAUTH_REDIRECT_URI} is registered as a redirect URI in your Strava app settings.`,
+  );
+  console.log("Opening browser for authorization...\n");
+
+  const state = crypto.randomBytes(16).toString("hex");
+  const authUrl = buildAuthUrl(state);
+
+  openBrowser(authUrl);
+  console.log("If the browser did not open automatically, visit:");
+  console.log(`  ${authUrl}\n`);
+
+  console.log(`Waiting for authorization callback on port ${OAUTH_PORT}...`);
+  const code = await waitForOAuthCallback(state);
+
+  console.log("Authorization received. Exchanging code for tokens...");
+  const refreshToken = await exchangeCodeForToken(code);
+
+  saveRefreshTokenToEnv(refreshToken);
+  return refreshToken;
+}
 
 // ---------------------------------------------------------------------------
 // Strava API helpers
 // ---------------------------------------------------------------------------
 
-async function refreshAccessToken(): Promise<string> {
+async function refreshAccessToken(refreshToken: string): Promise<string> {
   console.log("Refreshing Strava access token...");
 
   const response = await fetch("https://www.strava.com/oauth/token", {
@@ -65,7 +217,7 @@ async function refreshAccessToken(): Promise<string> {
       client_id: STRAVA_CLIENT_ID,
       client_secret: STRAVA_CLIENT_SECRET,
       grant_type: "refresh_token",
-      refresh_token: STRAVA_REFRESH_TOKEN,
+      refresh_token: refreshToken,
     }),
   });
 
@@ -262,7 +414,24 @@ async function main(): Promise<void> {
   fs.mkdirSync(gpxDir, { recursive: true });
   fs.mkdirSync(mdxDir, { recursive: true });
 
-  const accessToken = await refreshAccessToken();
+  let refreshToken = process.env.STRAVA_REFRESH_TOKEN;
+
+  if (!refreshToken) {
+    console.log("No STRAVA_REFRESH_TOKEN found in .env.");
+    refreshToken = await interactiveLogin();
+  }
+
+  let accessToken: string;
+  try {
+    accessToken = await refreshAccessToken(refreshToken);
+  } catch {
+    console.log(
+      "Token refresh failed — the refresh token may be expired or invalid.",
+    );
+    refreshToken = await interactiveLogin();
+    accessToken = await refreshAccessToken(refreshToken);
+  }
+
   const activities = await fetchActivities(accessToken);
 
   let gpxWritten = 0;
