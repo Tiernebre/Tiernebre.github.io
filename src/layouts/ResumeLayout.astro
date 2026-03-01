@@ -27,15 +27,14 @@ const { name, email, phone, website } = Astro.props.frontmatter;
     <div class="resume-container">
       <header class="resume-header">
         <h1 class="resume-name">{name}</h1>
-        <p class="resume-contact">{email} · {phone} · {website}</p>
-        <div class="resume-download-wrapper">
-          <button class="resume-download-btn" onclick="window.print()">
-            Download PDF
-          </button>
-          <span class="resume-download-hint"
-            >Print to PDF in your browser's print dialog</span
-          >
-        </div>
+        <p class="resume-contact">
+          <a href={`mailto:${email}`}>{email}</a> ·
+          <a href={`tel:${phone}`}>{phone}</a> ·
+          <a href={website}>{website}</a>
+        </p>
+        <button class="resume-download-btn" onclick="window.print()">
+          Download PDF
+        </button>
       </header>
       <main class="resume-body">
         <slot />
@@ -69,10 +68,20 @@ const { name, email, phone, website } = Astro.props.frontmatter;
     margin: 0 0 var(--size-3);
   }
 
-  .resume-download-wrapper {
-    display: flex;
-    align-items: center;
-    gap: var(--size-3);
+  .resume-contact a {
+    color: var(--indigo-7);
+    text-decoration: underline;
+    text-underline-offset: var(--size-1);
+  }
+
+  .resume-contact a:hover {
+    color: var(--indigo-9);
+  }
+
+  .resume-contact a:focus-visible {
+    outline: 2px solid var(--indigo-7);
+    outline-offset: 2px;
+    border-radius: var(--radius-1);
   }
 
   .resume-download-btn {
@@ -87,11 +96,6 @@ const { name, email, phone, website } = Astro.props.frontmatter;
 
   .resume-download-btn:hover {
     background: var(--text-2);
-  }
-
-  .resume-download-hint {
-    font-size: var(--font-size-0);
-    color: var(--text-2);
   }
 
   .resume-body :global(h2) {
@@ -135,7 +139,19 @@ const { name, email, phone, website } = Astro.props.frontmatter;
   }
 
   .resume-body :global(a) {
-    color: var(--text-1);
+    color: var(--indigo-7);
+    text-decoration: underline;
+    text-underline-offset: var(--size-1);
+  }
+
+  .resume-body :global(a:hover) {
+    color: var(--indigo-9);
+  }
+
+  .resume-body :global(a:focus-visible) {
+    outline: 2px solid var(--indigo-7);
+    outline-offset: 2px;
+    border-radius: var(--radius-1);
   }
 
   @media print {
