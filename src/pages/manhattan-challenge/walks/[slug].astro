@@ -1,0 +1,199 @@
+---
+import { getCollection, render } from "astro:content";
+import Layout from "../../../layouts/Layout.astro";
+import ManhattanMap from "../../../components/ManhattanMap.astro";
+import type { GeoJsonFeature } from "../../../components/ManhattanMap.astro";
+
+export async function getStaticPaths() {
+  const walks = await getCollection("manhattan-challenge");
+  const sorted = [...walks].sort(
+    (a, b) => a.data.date.getTime() - b.data.date.getTime(),
+  );
+
+  return sorted.map((entry, index) => ({
+    params: { slug: entry.data.slug },
+    props: {
+      entry,
+      prev: index > 0 ? sorted[index - 1] : null,
+      next: index < sorted.length - 1 ? sorted[index + 1] : null,
+    },
+  }));
+}
+
+const { entry, prev, next } = Astro.props;
+const { Content } = await render(entry);
+
+const formattedDate = entry.data.date.toLocaleDateString("en-US", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+  timeZone: "UTC",
+});
+
+const hours = Math.floor(entry.data.duration_minutes / 60);
+const minutes = entry.data.duration_minutes % 60;
+const durationFormatted = hours > 0 ? `${hours}h ${minutes}m` : `${minutes}m`;
+
+const neighborhoodList =
+  entry.data.neighborhoods.length > 0
+    ? entry.data.neighborhoods.join(", ")
+    : "None listed";
+
+const features: GeoJsonFeature[] = [
+  {
+    type: "Feature" as const,
+    geometry: { type: "LineString" as const, coordinates: [] },
+    properties: {
+      slug: entry.data.slug,
+      date: entry.data.date.toISOString().split("T")[0],
+      title: entry.data.title,
+    },
+  },
+];
+---
+
+<Layout>
+  <main class="walk-detail">
+    <header class="walk-header">
+      <h1>{entry.data.title}</h1>
+      <p class="walk-date">{formattedDate}</p>
+    </header>
+
+    <div class="walk-stats">
+      <div class="stat">
+        <span class="stat-label">Distance</span>
+        <span class="stat-value">{entry.data.distance_miles.toFixed(1)} mi</span
+        >
+      </div>
+      <div class="stat">
+        <span class="stat-label">Duration</span>
+        <span class="stat-value">{durationFormatted}</span>
+      </div>
+      <div class="stat">
+        <span class="stat-label">Neighborhoods</span>
+        <span class="stat-value">{neighborhoodList}</span>
+      </div>
+    </div>
+
+    <div class="walk-map">
+      <ManhattanMap features={features} />
+    </div>
+
+    <div class="walk-body">
+      <Content />
+    </div>
+
+    <nav class="walk-nav">
+      {
+        prev && (
+          <a
+            href={`/manhattan-challenge/walks/${prev.data.slug}`}
+            class="nav-link nav-prev"
+          >
+            &larr; Previous walk
+          </a>
+        )
+      }
+      {
+        next && (
+          <a
+            href={`/manhattan-challenge/walks/${next.data.slug}`}
+            class="nav-link nav-next"
+          >
+            Next walk &rarr;
+          </a>
+        )
+      }
+    </nav>
+  </main>
+</Layout>
+
+<style>
+  .walk-detail {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    font-family: sans-serif;
+  }
+
+  .walk-header {
+    margin-bottom: 1.5rem;
+  }
+
+  .walk-header h1 {
+    font-size: 2rem;
+    margin: 0 0 0.25rem 0;
+  }
+
+  .walk-date {
+    color: #666;
+    font-size: 1rem;
+    margin: 0;
+  }
+
+  .walk-stats {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    background: #f5f5f5;
+    border-radius: 8px;
+    padding: 1rem 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .stat {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .stat-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #888;
+    font-weight: 600;
+  }
+
+  .stat-value {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #222;
+  }
+
+  .walk-map {
+    height: 400px;
+    margin-bottom: 2rem;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .walk-body {
+    line-height: 1.7;
+    color: #333;
+    margin-bottom: 2rem;
+  }
+
+  .walk-nav {
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid #e0e0e0;
+    padding-top: 1.5rem;
+    margin-top: 1rem;
+  }
+
+  .nav-link {
+    color: #e63946;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+
+  .nav-link:hover {
+    text-decoration: underline;
+  }
+
+  .nav-next {
+    margin-left: auto;
+  }
+</style>
