@@ -2,13 +2,15 @@
 import "../styles/global.css";
 
 interface Props {
-  name: string;
-  email: string;
-  phone: string;
-  website: string;
+  frontmatter: {
+    name: string;
+    email: string;
+    phone: string;
+    website: string;
+  };
 }
 
-const { name, email, phone, website } = Astro.props;
+const { name, email, phone, website } = Astro.props.frontmatter;
 ---
 
 <!doctype html>
