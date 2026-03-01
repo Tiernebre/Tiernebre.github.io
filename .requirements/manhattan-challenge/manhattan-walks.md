@@ -16,14 +16,14 @@ A dedicated section of the personal website that tracks and visualizes the goal 
 
 ## User Stories
 
-| As a... | I want to... | So that... |
-|---|---|---|
-| Visitor | See all walked routes on a map | I can understand the scope of the project |
-| Visitor | See how much of Manhattan has been covered | I get a sense of progress |
-| Visitor | See aggregated stats (total distance, time, walks, span) | I can appreciate the full effort behind the project at a glance |
-| Visitor | Click a walked segment | I can find out when that area was walked |
-| Visitor | Click through to a walk's detail page | I can read the full story of that day's walk |
-| Site owner | Add a new walk | The map and progress automatically update |
+| As a...    | I want to...                                             | So that...                                                      |
+| ---------- | -------------------------------------------------------- | --------------------------------------------------------------- |
+| Visitor    | See all walked routes on a map                           | I can understand the scope of the project                       |
+| Visitor    | See how much of Manhattan has been covered               | I get a sense of progress                                       |
+| Visitor    | See aggregated stats (total distance, time, walks, span) | I can appreciate the full effort behind the project at a glance |
+| Visitor    | Click a walked segment                                   | I can find out when that area was walked                        |
+| Visitor    | Click through to a walk's detail page                    | I can read the full story of that day's walk                    |
+| Site owner | Add a new walk                                           | The map and progress automatically update                       |
 
 ---
 
@@ -171,16 +171,16 @@ The `/manhattan-challenge` page displays a statistics panel summarizing all walk
 
 ### Stats to Display
 
-| Stat | Description | Example |
-|---|---|---|
-| **Total distance** | Sum of `distance_miles` across all walks | "47.3 miles walked" |
-| **Total time** | Sum of `duration_minutes` across all walks, formatted as hours + minutes | "14 hrs 22 min" |
-| **Total walks** | Count of walk entries | "8 walks" |
-| **Project span** | Date range from first walk to most recent walk | "Jan 5 – Mar 1, 2026" |
-| **Longest walk** | Walk with the highest `distance_miles`, linked to its detail page | "9.1 mi — Feb 28, 2026" |
-| **Average distance** | Mean `distance_miles` across all walks | "5.9 mi per walk" |
-| **Neighborhoods visited** | Deduplicated count of all neighborhoods across all walks | "18 neighborhoods" |
-| **Most recent walk** | Date and title of the latest walk entry, linked to its detail page | "Mar 1, 2026 — Harlem Loop" |
+| Stat                      | Description                                                              | Example                     |
+| ------------------------- | ------------------------------------------------------------------------ | --------------------------- |
+| **Total distance**        | Sum of `distance_miles` across all walks                                 | "47.3 miles walked"         |
+| **Total time**            | Sum of `duration_minutes` across all walks, formatted as hours + minutes | "14 hrs 22 min"             |
+| **Total walks**           | Count of walk entries                                                    | "8 walks"                   |
+| **Project span**          | Date range from first walk to most recent walk                           | "Jan 5 – Mar 1, 2026"       |
+| **Longest walk**          | Walk with the highest `distance_miles`, linked to its detail page        | "9.1 mi — Feb 28, 2026"     |
+| **Average distance**      | Mean `distance_miles` across all walks                                   | "5.9 mi per walk"           |
+| **Neighborhoods visited** | Deduplicated count of all neighborhoods across all walks                 | "18 neighborhoods"          |
+| **Most recent walk**      | Date and title of the latest walk entry, linked to its detail page       | "Mar 1, 2026 — Harlem Loop" |
 
 ### Functional Requirements
 
@@ -203,10 +203,10 @@ The `/manhattan-challenge` page displays a statistics panel summarizing all walk
 
 ## Open Questions
 
-| # | Question | Notes |
-|---|---|---|
-| 1 | ~~What is the primary GPS source?~~ | **Resolved**: Strava via API. A `scripts/sync-strava.ts` script fetches activity streams and generates GPX files + MDX stubs automatically. |
-| 2 | ~~Leaflet or MapLibre?~~ | **Resolved**: Leaflet.js. Simpler setup, sufficient for the expected scale. |
-| 3 | ~~Should progress be spatial (turf.js deduplication) or cumulative mileage?~~ | **Resolved**: Cumulative mileage. Sum of `distance_miles` ÷ ~1,300 miles. Simple and fast; spatial deduplication is a v2 stretch goal. |
-| 4 | ~~MDX or plain Markdown for walk posts?~~ | **Resolved**: MDX. Enables embedding the route map component directly in the post body. |
-| 5 | ~~Is there a desired URL structure?~~ | **Resolved**: `/manhattan-challenge` for the overview, `/manhattan-challenge/walks/[slug]` for individual walk pages. |
+| #   | Question                                                                      | Notes                                                                                                                                       |
+| --- | ----------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | ~~What is the primary GPS source?~~                                           | **Resolved**: Strava via API. A `scripts/sync-strava.ts` script fetches activity streams and generates GPX files + MDX stubs automatically. |
+| 2   | ~~Leaflet or MapLibre?~~                                                      | **Resolved**: Leaflet.js. Simpler setup, sufficient for the expected scale.                                                                 |
+| 3   | ~~Should progress be spatial (turf.js deduplication) or cumulative mileage?~~ | **Resolved**: Cumulative mileage. Sum of `distance_miles` ÷ ~1,300 miles. Simple and fast; spatial deduplication is a v2 stretch goal.      |
+| 4   | ~~MDX or plain Markdown for walk posts?~~                                     | **Resolved**: MDX. Enables embedding the route map component directly in the post body.                                                     |
+| 5   | ~~Is there a desired URL structure?~~                                         | **Resolved**: `/manhattan-challenge` for the overview, `/manhattan-challenge/walks/[slug]` for individual walk pages.                       |

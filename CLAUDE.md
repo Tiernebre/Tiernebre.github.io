@@ -29,4 +29,3 @@ Personal portfolio/website built with Astro 5. Hosted via GitHub Pages (Tiernebr
 ## Git / GitHub
 
 - When creating pull requests, don't write a `Test plan` section.
-
