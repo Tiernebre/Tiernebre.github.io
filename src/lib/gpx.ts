@@ -26,6 +26,44 @@ function dateFromSlug(slug: string): string {
   return slug;
 }
 
+export function getWalkGeoJsonFeature(slug: string): WalkGeoJsonFeature | null {
+  const filePath = join(GPX_DIR, `${slug}.gpx`);
+  if (!existsSync(filePath)) {
+    return null;
+  }
+
+  const content = readFileSync(filePath, "utf-8");
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(content, "text/xml");
+  const collection = gpx(doc);
+
+  for (const feature of collection.features) {
+    if (feature.geometry && feature.geometry.type === "LineString") {
+      const rawTitle =
+        feature.properties &&
+        typeof feature.properties["name"] === "string" &&
+        feature.properties["name"].length > 0
+          ? feature.properties["name"]
+          : slug;
+
+      return {
+        type: "Feature",
+        geometry: {
+          type: "LineString",
+          coordinates: feature.geometry.coordinates as [number, number][],
+        },
+        properties: {
+          slug,
+          date: dateFromSlug(slug),
+          title: rawTitle,
+        },
+      };
+    }
+  }
+
+  return null;
+}
+
 export function getWalkGeoJsonFeatures(): WalkGeoJsonFeature[] {
   if (!existsSync(GPX_DIR)) {
     return [];
