@@ -43,11 +43,6 @@ const { name, email, phone, website } = Astro.props;
 </html>
 
 <style>
-  html,
-  body {
-    color: var(--gray-9);
-  }
-
   .resume-container {
     max-width: 800px;
     margin: 0 auto;
@@ -61,13 +56,13 @@ const { name, email, phone, website } = Astro.props;
   .resume-name {
     font-size: var(--font-size-6);
     font-weight: var(--font-weight-7);
-    color: var(--gray-9);
+    color: var(--text-1);
     margin: 0 0 var(--size-2);
     line-height: var(--font-lineheight-1);
   }
 
   .resume-contact {
-    color: var(--gray-6);
+    color: var(--text-2);
     font-size: var(--font-size-2);
     margin: 0 0 var(--size-3);
   }
@@ -81,29 +76,29 @@ const { name, email, phone, website } = Astro.props;
   .resume-download-btn {
     font-size: var(--font-size-1);
     padding: var(--size-1) var(--size-3);
-    background: var(--gray-9);
-    color: #fff;
+    background: var(--text-1);
+    color: var(--surface-1);
     border: none;
     border-radius: var(--radius-2);
     cursor: pointer;
   }
 
   .resume-download-btn:hover {
-    background: var(--gray-7);
+    background: var(--text-2);
   }
 
   .resume-download-hint {
     font-size: var(--font-size-0);
-    color: var(--gray-6);
+    color: var(--text-2);
   }
 
   .resume-body :global(h2) {
     font-size: var(--font-size-1);
     font-weight: var(--font-weight-7);
-    color: var(--gray-7);
+    color: var(--text-2);
     text-transform: uppercase;
     letter-spacing: var(--font-letterspacing-3);
-    border-bottom: 1px solid var(--gray-3);
+    border-bottom: 1px solid var(--surface-3);
     padding-bottom: var(--size-1);
     margin-top: var(--size-6);
     margin-bottom: var(--size-3);
@@ -112,14 +107,14 @@ const { name, email, phone, website } = Astro.props;
   .resume-body :global(h3) {
     font-size: var(--font-size-2);
     font-weight: var(--font-weight-6);
-    color: var(--gray-9);
+    color: var(--text-1);
     margin-top: var(--size-4);
     margin-bottom: var(--size-1);
   }
 
   .resume-body :global(em) {
     font-style: italic;
-    color: var(--gray-6);
+    color: var(--text-2);
   }
 
   .resume-body :global(ul) {
@@ -138,7 +133,7 @@ const { name, email, phone, website } = Astro.props;
   }
 
   .resume-body :global(a) {
-    color: var(--gray-9);
+    color: var(--text-1);
   }
 
   @media print {
