@@ -1,0 +1,233 @@
+{
+  "picture": {
+    "hidden": false,
+    "url": "",
+    "size": 64,
+    "rotation": 0,
+    "aspectRatio": 1,
+    "borderRadius": 0,
+    "borderColor": "rgba(0, 0, 0, 0)",
+    "borderWidth": 0,
+    "shadowColor": "rgba(0, 0, 0, 0.5)",
+    "shadowWidth": 0
+  },
+  "basics": {
+    "name": "Brendan Tierney",
+    "headline": "",
+    "email": "tiernebre@gmail.com",
+    "phone": "(208) 244-4083",
+    "location": "",
+    "website": {
+      "url": "https://tiernebre.com/",
+      "label": ""
+    },
+    "customFields": []
+  },
+  "summary": {
+    "title": "Summary",
+    "columns": 1,
+    "hidden": false,
+    "content": ""
+  },
+  "sections": {
+    "profiles": {
+      "title": "Profiles",
+      "columns": 1,
+      "hidden": false,
+      "items": []
+    },
+    "experience": {
+      "title": "Experience",
+      "columns": 1,
+      "hidden": false,
+      "items": [
+        {
+          "id": "abdfggz6jkg2uxi5a6v7bsu3",
+          "hidden": false,
+          "company": "Meta",
+          "position": "Software Engineer (E5; Senior)",
+          "location": "",
+          "period": "June 2025 - Present",
+          "website": {
+            "url": "",
+            "label": ""
+          },
+          "description": "<ul><li><p>Full-stack senior software engineer within the Facebook Reels Monetization organization on Conversions Experience. I worked on ads that show up in the Reels platform, using technologies such as <a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://hacklang.org/\"><strong>Hack</strong></a>, <a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://fblitho.com/\"><strong>Litho</strong></a>, React, and AI coding with Claude Sonnet.</p></li><li><p>Launched and heralded a brand new format re-design for Real Time Immersive (RTI ads) that saw a notable increase in revenue.</p></li><li><p>Established a brand-new zero-to-one workstream for Reconsideration of Reels ads. Built out brand scope and led efforts by working with other engineers, designers, and product managers.</p><ul><li><p>Examples of efforts: fixing shared and saved ad experiences and improving conversion rate on repeat impressions</p></li></ul></li></ul>"
+        },
+        {
+          "id": "kmifad35ugwok8341j7ey943",
+          "hidden": false,
+          "company": "Reddit",
+          "position": "Senior Software Engineer",
+          "location": "",
+          "period": "February 2022 - June 2025",
+          "website": {
+            "url": "",
+            "label": ""
+          },
+          "description": "<ul><li><p>Lead Senior Web Front End Engineer on <a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://www.business.reddit.com/advertise/ad-types\"><strong>New Ad Formats, a team I was the first engineer on and helped create and shape</strong></a>.</p><ul><li><p>Worked with iOS, Android, Back End, and Front End engineers to build new ads products from 0 to V1 and V2, establish product market fit and deliver strong user experiences that align with advertisers marketing goals in a rapid, agile environment.</p></li></ul></li><li><p>Cross-functional and cross-org team technical lead on <a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://www.business.reddit.com/advertise/ad-types/conversation-ads\"><strong>conversation ads, a brand new ad placement</strong></a>. I  led 7 engineers across 5 different teams to deliver this placement<strong> </strong>that was highlighted in the <a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://s203.q4cdn.com/380862485/files/doc_financials/2024/q2/Q2-2024-Shareholder-Letter.pdf\"><strong>Q2 2024 Shareholders Letter</strong></a><strong>.</strong></p><ul><li><p>This initiative was <strong>key in Reddit's first ever profitable quarter</strong> as reported in the <a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://s203.q4cdn.com/380862485/files/doc_financials/2024/q3/Q3-24-Shareholder-Letter.pdf\"><strong>Q3 2024 Shareholders Letter</strong></a>. This saw Reddit's stock ($RDDT) <strong>double in growth from $80 to $160</strong> and had <a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://finance.yahoo.com/news/morgan-stanley-upgrades-reddit-forecasts-140217707.html\"><strong>Morgan Stanley grade Reddit as an \"overweight\" stock</strong></a>.</p></li></ul></li><li><p>Point of contact and lead expert for key and critical ad formats such as <a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"http://business.reddit.com/advertise/ad-types#video-ads\"><strong>video</strong></a>, <a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://www.business.reddit.com/advertise/ad-types#reddit-takeover\"><strong>takeover</strong></a>, <a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://www.business.reddit.com/advertise/ad-types#category-takeover\"><strong>category takeover</strong></a> and <a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://www.business.reddit.com/advertise/ad-types#free-form-ads\"><strong>free-form</strong></a> ads.</p><ul><li><p>These products were specifically called out in <a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://www.sec.gov/Archives/edgar/data/1713445/000162828024006294/reddits-1q423.htm\"><strong>the S-1 document</strong></a> for <a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://www.cnn.com/2024/03/21/investing/reddit-ipo/index.html\"><strong>Reddit's successful IPO exit</strong></a>. See pages 8, 31, 79, 103, and 152 for references on the impact of these new formats I built <strong>that helped Reddit become a public company</strong>. The stock opened at<strong> </strong>$34.00 and reached a max of $264.48 <strong>(a 7.75x growth in the stock price!)</strong>.</p></li></ul></li><li><p>Built web user interfaces, flows, microservices, and network APIs that are used at scale by <a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://investor.redditinc.com/news-events/news-releases/news-details/2025/Reddit-Announces-First-Quarter-2025-Results/\"><strong>108.1 million daily active users</strong> </a>and advertisers to create engaging content on the platform across <a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://backlinko.com/reddit-users#how-many-subreddits-does-reddit-have\"><strong>3 million+ communities</strong></a> on <a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://www.semrush.com/website/reddit.com/overview/\"><strong>the 6th most visited global website</strong></a>.  </p><ul><li><p>Utilized HTML5, CSS3, React, ESLint, TypeScript, JavaScript, Redux, CSS Modules, GraphQL, Jest, Lit, Tailwind CSS, Node.js, Python, Go, Kubernetes, Baseplate (<a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://github.com/reddit/baseplate.py\"><strong>Reddit's open-source Python and </strong></a><a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://github.com/reddit/baseplate.go\"><strong>Go framework</strong></a>), HTTP, JSON, and AWS (S3, DynamoDB).  </p></li></ul></li><li><p>Ran 130+ technical interviews for a variety of software engineering roles, mentored interns and junior engineers, participated in and actively improved our team's on-call rotation, and represented the Ad Formats team at Reddit's front end engineering guild. </p></li><li><p>Contributed on <a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://www.reddit.com/r/reddit/comments/15eobm3/an_improved_loggedout_web_experience\"><strong>the improved next generation web rewrite of Reddit</strong></a><strong> </strong>known as <a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://sh.reddit.com/\"><strong>Shreddit.</strong></a><strong> </strong>I<strong> </strong>collaborated across 10+ different teams with over 80 different engineers to develop existing ad formats (image, video, text, and carousel ads), and new ad formats (supporting link and lead generation ads) across different browsers (Chrome, Safari) and devices (Windows, iOS, Android).</p></li></ul>"
+        },
+        {
+          "id": "pughdmut80kq4rth8emvp0eo",
+          "hidden": false,
+          "company": "Tango",
+          "position": "Software Development Engineer II",
+          "location": "",
+          "period": "January 2018 - February 2022",
+          "website": {
+            "url": "",
+            "label": ""
+          },
+          "description": "<ul><li><p>Organized and built a new engineering team called \"Front End Systems\" that built out and maintained Tango's design system to help bridge product, design, and engineering teams.</p></li><li><p>Collaborated with 5 other full-stack focused engineering teams to consult, educate, and direct the front-end technologies and direction for products like Rewards Genius, Reward Link, and other Tango user facing products.</p></li><li><p>Served as the primary front end / UI / UX architect and consulted on many front end product and software implementations  with consideration for performance, engineering feasibility, scalability, and working across different devices and viewports.</p></li><li><p>Since I had joined Tango in 2018, my work on the <a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://www.tangocard.com/solutions/reward-link\"><strong>Reward Links</strong></a>, <a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://www.tangocard.com/solutions/tango-portal\"><strong>Rewards Genius</strong></a>, and <a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://www.tangocard.com/solutions/raas-api\"><strong>Rewards as a Service (RaaS)</strong></a> products<strong> led Tango to grow in profit and value by 800%</strong>, leading to a successful company exit with <a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://www.businesswire.com/news/home/20240131957920/en/Blackhawk-Network-Signs-Agreement-to-Acquire-Tango-Card\"><strong>Tango being acquired by Blackhawk Network</strong></a><strong>.</strong> </p></li></ul>"
+        }
+      ]
+    },
+    "education": {
+      "title": "Education",
+      "columns": 1,
+      "hidden": false,
+      "items": [
+        {
+          "id": "e1usm8ejoy56a4rlvt6w0uh5",
+          "hidden": false,
+          "school": "Boise State University",
+          "degree": "Bachelor of Science",
+          "area": "Computer Science",
+          "grade": "3.67 Cumulative GPA, 3.79 In-Major GPA",
+          "location": "",
+          "period": "August 2014 - May 2018",
+          "website": {
+            "url": "",
+            "label": ""
+          },
+          "description": "<ul><li><p>Graduated on the College of Engineering Dean's List (High Honors). Vice President of Phi Gamma Delta chapter.</p></li></ul>"
+        }
+      ]
+    },
+    "projects": {
+      "title": "Projects",
+      "columns": 1,
+      "hidden": false,
+      "items": []
+    },
+    "skills": {
+      "title": "Skills",
+      "columns": 1,
+      "hidden": false,
+      "items": []
+    },
+    "languages": {
+      "title": "Languages",
+      "columns": 1,
+      "hidden": false,
+      "items": []
+    },
+    "interests": {
+      "title": "Interests",
+      "columns": 1,
+      "hidden": false,
+      "items": []
+    },
+    "awards": {
+      "title": "Awards",
+      "columns": 1,
+      "hidden": false,
+      "items": []
+    },
+    "certifications": {
+      "title": "Certifications",
+      "columns": 1,
+      "hidden": false,
+      "items": []
+    },
+    "publications": {
+      "title": "Publications",
+      "columns": 1,
+      "hidden": false,
+      "items": []
+    },
+    "volunteer": {
+      "title": "Volunteering",
+      "columns": 1,
+      "hidden": false,
+      "items": []
+    },
+    "references": {
+      "title": "References",
+      "columns": 1,
+      "hidden": false,
+      "items": []
+    }
+  },
+  "customSections": [],
+  "metadata": {
+    "template": "onyx",
+    "layout": {
+      "sidebarWidth": 35,
+      "pages": [
+        {
+          "fullWidth": false,
+          "main": [
+            "profiles",
+            "experience",
+            "education",
+            "projects",
+            "volunteer",
+            "references"
+          ],
+          "sidebar": [
+            "skills",
+            "interests",
+            "certifications",
+            "awards",
+            "publications",
+            "languages"
+          ]
+        }
+      ]
+    },
+    "css": {
+      "enabled": false,
+      "value": "* {\n\toutline: 1px solid #000;\n\toutline-offset: 4px;\n}"
+    },
+    "page": {
+      "gapX": 4,
+      "gapY": 6,
+      "marginX": 18,
+      "marginY": 18,
+      "format": "a4",
+      "locale": "en-US",
+      "hideIcons": false
+    },
+    "design": {
+      "level": {
+        "icon": "star",
+        "type": "circle"
+      },
+      "colors": {
+        "primary": "rgba(87, 83, 78, 1)",
+        "text": "rgba(0, 0, 0, 1)",
+        "background": "rgba(255, 255, 255, 1)"
+      }
+    },
+    "typography": {
+      "body": {
+        "fontFamily": "Open Sans",
+        "fontWeights": [
+          "400"
+        ],
+        "fontSize": 9,
+        "lineHeight": 1.5
+      },
+      "heading": {
+        "fontFamily": "Open Sans",
+        "fontWeights": [
+          "600"
+        ],
+        "fontSize": 12,
+        "lineHeight": 1.5
+      }
+    },
+    "notes": ""
+  }
+}
