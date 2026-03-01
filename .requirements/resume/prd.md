@@ -2,46 +2,81 @@
 
 ## Overview
 
-Build a `/resume` page on tiernebre.com that renders `resume.json` as a live, styled web page — the JSON file is the single source of truth for all resume content, committed to version control. The page also provides a way to get a clean PDF copy for job applications and emails.
+Build a `/resume` page on tiernebre.com as a single MDX file — content is written in plain Markdown, contact info lives in frontmatter, and a layout component handles the header and print styles. The page also provides a way to get a clean PDF copy for job applications and emails.
 
 ---
 
 ## Goals
 
-1. **Live resume page** at `/resume` — always reflects the current state of `resume.json`
-2. **Version-controlled source of truth** — editing `resume.json` is all that's needed to update the resume
+1. **Live resume page** at `/resume` — always reflects the current state of the MDX file
+2. **Version-controlled source of truth** — editing `resume.mdx` is all that's needed to update the resume
 3. **PDF output** — a clean, professional PDF that can be downloaded directly from the page
 
 ---
 
 ## Data Source
 
-`resume.json` uses the [Reactive Resume](https://docs.rxresu.me/) schema. The file lives at `.requirements/resume/resume.json`. For the Astro build to import it cleanly, **move it to `src/data/resume.json`** so it's importable via a static `import`.
+### Temporary Reference File
 
-The JSON structure maps to these rendered sections:
+`.requirements/resume/resume.json` is a **temporary export from [Reactive Resume](https://docs.rxresu.me/)** used as a reference for the initial content only. It is **not** the long-term data source and should not be imported by the Astro build.
 
-| JSON key              | Resume section                        |
-| --------------------- | ------------------------------------- |
-| `basics`              | Header (name, headline, contact info) |
-| `summary`             | Summary paragraph                     |
-| `sections.experience` | Work Experience                       |
-| `sections.education`  | Education                             |
-| `sections.projects`   | Projects (hidden if `items` is empty) |
-| `sections.skills`     | Skills (hidden if `items` is empty)   |
-| Remaining sections    | Hidden when `items` is empty          |
+### Permanent Data File
 
-Sections with `"hidden": true` or an empty `items` array are not rendered.
+**`src/pages/resume.mdx`** is the canonical, maintained source of truth.
+
+- **Frontmatter** holds structured contact info (name, email, phone, website)
+- **Body** is plain Markdown — headings, bullet points, and links — for all resume sections
+- No TypeScript interfaces, no JSON parsing, no HTML strings to maintain
+
+Example structure:
+
+```mdx
+---
+layout: ../layouts/ResumeLayout.astro
+name: Brendan Tierney
+email: tiernebre@gmail.com
+phone: (208) 244-4083
+website: https://tiernebre.com/
+---
+
+## Experience
+
+### Meta · Software Engineer (E5; Senior)
+*June 2025 – Present*
+
+- Full-stack senior software engineer on Conversions Experience...
+
+### Reddit · Senior Software Engineer
+*February 2022 – June 2025*
+
+- Lead Senior Web Front End Engineer on New Ad Formats...
+
+## Education
+
+### Boise State University · B.S. Computer Science
+*August 2014 – May 2018*
+
+- Graduated on the College of Engineering Dean's List...
+```
+
+Translate the content from `.requirements/resume/resume.json` into this format. Once `resume.mdx` is complete and the page is working, `.requirements/resume/resume.json` may be deleted.
 
 ---
 
 ## Page
 
 **URL:** `/resume`
-**File:** `src/pages/resume/index.astro`
+**File:** `src/pages/resume.mdx`
 
 ### Layout
 
-The page uses a single-column layout (no sidebar — keep it simple for both screen and print). Reading order:
+The page uses `ResumeLayout.astro` (assigned via the `layout` frontmatter field). The layout:
+
+- Renders the header (name, contact line, PDF download button) using frontmatter props
+- Wraps the MDX body in a centered, max-width container
+- Owns the `@media print` styles
+
+Reading order:
 
 ```
 ┌─────────────────────────────────────────────┐
@@ -55,33 +90,31 @@ The page uses a single-column layout (no sidebar — keep it simple for both scr
 │  June 2025 – Present                        │
 │  • bullet points...                         │
 │                                             │
-│  Reddit · Senior Software Engineer         │
+│  Reddit · Senior Software Engineer          │
 │  Feb 2022 – June 2025                       │
 │  • bullet points...                         │
 ├─────────────────────────────────────────────┤
 │  EDUCATION                                  │
 │  ─────────────────────────────────────────  │
-│  Boise State University · B.S. Comp Sci    │
+│  Boise State University · B.S. Comp Sci     │
 │  Aug 2014 – May 2018                        │
 │  • bullet points...                         │
 └─────────────────────────────────────────────┘
 ```
 
-### Components to build
+### Files to create
 
-| Component                    | Purpose                                               |
-| ---------------------------- | ----------------------------------------------------- |
-| `ResumeHeader.astro`         | Name, contact line, PDF download button               |
-| `ResumeSection.astro`        | Titled section wrapper (Experience, Education, etc.)  |
-| `ResumeExperienceItem.astro` | Company, position, period, HTML description           |
-| `ResumeEducationItem.astro`  | School, degree, area, grade, period, HTML description |
+| File                          | Purpose                                                       |
+| ----------------------------- | ------------------------------------------------------------- |
+| `src/pages/resume.mdx`        | Resume content (frontmatter + markdown body)                  |
+| `src/layouts/ResumeLayout.astro` | Header, download button, print styles, content wrapper     |
 
-The `description` field in `resume.json` is HTML (rich text with `<ul>`, `<li>`, `<a>`, `<strong>`, `<p>`). Render it with `<Fragment set:html={description} />` — **do not sanitize** since this is a trusted, self-authored file.
+No separate item components needed — Markdown headings and bullets handle the structure.
 
 ### Styling
 
-- Use existing Open Props variables (see MEMORY.md for the variable map)
-- `var(--gray-9)` for name/headings, `var(--gray-7)` for section labels, `var(--gray-6)` for metadata (period, location)
+- Styles live in `ResumeLayout.astro` (scoped + `@media print`)
+- Use Open Props variables: `var(--gray-9)` for name/headings, `var(--gray-7)` for section labels, `var(--gray-6)` for metadata (period, location)
 - Clean, minimal — no decorative elements that won't survive print
 - Max content width: ~800px, centered
 - Font: `var(--font-sans)`
@@ -92,7 +125,7 @@ The `description` field in `resume.json` is HTML (rich text with `<ul>`, `<li>`,
 
 Use **print CSS** as the primary mechanism. This means:
 
-1. A "Download PDF" button on the page that triggers `window.print()`
+1. A "Download PDF" button in `ResumeLayout.astro` that triggers `window.print()`
 2. A `@media print` stylesheet that hides the button, removes margins/padding, and produces a clean single-column document when the user prints to PDF
 
 **Why this approach:**
@@ -112,9 +145,8 @@ Use **print CSS** as the primary mechanism. This means:
   }
 
   /* Avoid page breaks inside job entries */
-  .resume-experience-item,
-  .resume-education-item {
-    break-inside: avoid;
+  h3 {
+    break-after: avoid;
   }
 
   /* Remove decorative shadows, borders */
@@ -122,10 +154,10 @@ Use **print CSS** as the primary mechanism. This means:
     box-shadow: none !important;
   }
 
-  /* Ensure links show their URLs in print */
+  /* Suppress auto URL expansion next to links */
   a[href]::after {
     content: none;
-  } /* suppress auto URL expansion */
+  }
 }
 ```
 
@@ -135,13 +167,12 @@ A brief "Print to PDF" UX note on the page for first-time users.
 
 ## Implementation Steps
 
-1. Move `resume.json` from `.requirements/resume/resume.json` → `src/data/resume.json`
-2. Create the component files listed above
-3. Create `src/pages/resume/index.astro` — import and parse the JSON, pass data to components
-4. Add print CSS (scoped in the page + `@media print` block)
-5. Wire up the "Download PDF" button to `window.print()`
-6. Run `npm run build`, `npm run lint`, `npm run format:check` — fix any issues
-7. Open PR
+1. Create `src/layouts/ResumeLayout.astro` — accepts `name`, `email`, `phone`, `website` as props; renders header with download button; applies print styles; yields `<slot />` for MDX body
+2. Create `src/pages/resume.mdx` — frontmatter pointing to the layout, body content translated from `.requirements/resume/resume.json`
+3. Wire up the "Download PDF" button to `window.print()`
+4. Run `npm run build`, `npm run lint`, `npm run format:check` — fix any issues
+5. Open PR
+6. Delete `.requirements/resume/resume.json` (no longer needed once the page is live)
 
 ---
 
@@ -151,4 +182,4 @@ A brief "Print to PDF" UX note on the page for first-time users.
 - Syncing with LinkedIn or any external service
 - A resume editor UI
 - Multiple resume variants
-- Sidebar layout (the JSON's `metadata.layout` sidebar configuration is ignored — single column is cleaner)
+- Sidebar layout — single column is cleaner for both screen and print
