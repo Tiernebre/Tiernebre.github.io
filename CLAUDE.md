@@ -15,6 +15,7 @@ Personal portfolio/website built with Astro 5. Hosted via GitHub Pages (Tiernebr
 - `npm run lint:fix` — Run ESLint with auto-fix
 - `npm run format` — Format files with Prettier
 - `npm run format:check` — Check formatting with Prettier
+- `npm run test` — Runs tests
 
 ## Architecture
 
