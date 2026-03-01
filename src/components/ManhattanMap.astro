@@ -16,13 +16,19 @@ export interface GeoJsonFeature {
 
 interface Props {
   features: GeoJsonFeature[];
+  fitBounds?: boolean;
 }
 
-const { features } = Astro.props;
+const { features, fitBounds = false } = Astro.props;
 const featuresJson = JSON.stringify(features);
 ---
 
-<div id="manhattan-map" data-features={featuresJson}></div>
+<div
+  id="manhattan-map"
+  data-features={featuresJson}
+  data-fit-bounds={fitBounds ? "true" : "false"}
+>
+</div>
 
 <script>
   import L from "leaflet";
@@ -32,6 +38,7 @@ const featuresJson = JSON.stringify(features);
   if (!mapEl) throw new Error("Map element not found");
 
   const features = JSON.parse(mapEl.dataset.features ?? "[]");
+  const shouldFitBounds = mapEl.dataset.fitBounds === "true";
 
   const map = L.map("manhattan-map");
 
@@ -93,7 +100,7 @@ const featuresJson = JSON.stringify(features);
     });
   });
 
-  if (allLatLngs.length > 0) {
+  if (shouldFitBounds && allLatLngs.length > 0) {
     map.fitBounds(allLatLngs, { padding: [20, 20] });
   } else {
     map.setView([40.7831, -73.9712], 12);
