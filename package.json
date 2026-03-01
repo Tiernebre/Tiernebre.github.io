@@ -15,6 +15,7 @@
     "test:watch": "vitest"
   },
   "dependencies": {
+    "@astrojs/mdx": "^4.3.13",
     "astro": "^5.17.1",
     "leaflet": "^1.9.4",
     "open-props": "^1.7.23"
