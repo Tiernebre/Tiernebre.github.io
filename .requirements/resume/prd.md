@@ -20,15 +20,15 @@ Build a `/resume` page on tiernebre.com that renders `resume.json` as a live, st
 
 The JSON structure maps to these rendered sections:
 
-| JSON key | Resume section |
-|---|---|
-| `basics` | Header (name, headline, contact info) |
-| `summary` | Summary paragraph |
-| `sections.experience` | Work Experience |
-| `sections.education` | Education |
-| `sections.projects` | Projects (hidden if `items` is empty) |
-| `sections.skills` | Skills (hidden if `items` is empty) |
-| Remaining sections | Hidden when `items` is empty |
+| JSON key              | Resume section                        |
+| --------------------- | ------------------------------------- |
+| `basics`              | Header (name, headline, contact info) |
+| `summary`             | Summary paragraph                     |
+| `sections.experience` | Work Experience                       |
+| `sections.education`  | Education                             |
+| `sections.projects`   | Projects (hidden if `items` is empty) |
+| `sections.skills`     | Skills (hidden if `items` is empty)   |
+| Remaining sections    | Hidden when `items` is empty          |
 
 Sections with `"hidden": true` or an empty `items` array are not rendered.
 
@@ -69,12 +69,12 @@ The page uses a single-column layout (no sidebar — keep it simple for both scr
 
 ### Components to build
 
-| Component | Purpose |
-|---|---|
-| `ResumeHeader.astro` | Name, contact line, PDF download button |
-| `ResumeSection.astro` | Titled section wrapper (Experience, Education, etc.) |
-| `ResumeExperienceItem.astro` | Company, position, period, HTML description |
-| `ResumeEducationItem.astro` | School, degree, area, grade, period, HTML description |
+| Component                    | Purpose                                               |
+| ---------------------------- | ----------------------------------------------------- |
+| `ResumeHeader.astro`         | Name, contact line, PDF download button               |
+| `ResumeSection.astro`        | Titled section wrapper (Experience, Education, etc.)  |
+| `ResumeExperienceItem.astro` | Company, position, period, HTML description           |
+| `ResumeEducationItem.astro`  | School, degree, area, grade, period, HTML description |
 
 The `description` field in `resume.json` is HTML (rich text with `<ul>`, `<li>`, `<a>`, `<strong>`, `<p>`). Render it with `<Fragment set:html={description} />` — **do not sanitize** since this is a trusted, self-authored file.
 
@@ -96,6 +96,7 @@ Use **print CSS** as the primary mechanism. This means:
 2. A `@media print` stylesheet that hides the button, removes margins/padding, and produces a clean single-column document when the user prints to PDF
 
 **Why this approach:**
+
 - Zero build-time dependencies (no Puppeteer, no CI complexity)
 - Always reflects the current rendered page — no stale PDF artifact
 - Works on any browser on any OS
@@ -106,17 +107,25 @@ Use **print CSS** as the primary mechanism. This means:
 ```css
 @media print {
   /* Hide the download button */
-  .resume-download-btn { display: none; }
+  .resume-download-btn {
+    display: none;
+  }
 
   /* Avoid page breaks inside job entries */
   .resume-experience-item,
-  .resume-education-item { break-inside: avoid; }
+  .resume-education-item {
+    break-inside: avoid;
+  }
 
   /* Remove decorative shadows, borders */
-  * { box-shadow: none !important; }
+  * {
+    box-shadow: none !important;
+  }
 
   /* Ensure links show their URLs in print */
-  a[href]::after { content: none; } /* suppress auto URL expansion */
+  a[href]::after {
+    content: none;
+  } /* suppress auto URL expansion */
 }
 ```
 

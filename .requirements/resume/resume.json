@@ -213,17 +213,13 @@
     "typography": {
       "body": {
         "fontFamily": "Open Sans",
-        "fontWeights": [
-          "400"
-        ],
+        "fontWeights": ["400"],
         "fontSize": 9,
         "lineHeight": 1.5
       },
       "heading": {
         "fontFamily": "Open Sans",
-        "fontWeights": [
-          "600"
-        ],
+        "fontWeights": ["600"],
         "fontSize": 12,
         "lineHeight": 1.5
       }
