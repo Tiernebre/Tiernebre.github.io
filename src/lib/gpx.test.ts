@@ -35,6 +35,75 @@ describe("gpx", () => {
     vi.clearAllMocks();
   });
 
+  describe("getWalkGeoJsonFeature", () => {
+    it("returns null when the GPX file does not exist", async () => {
+      mockExistsSync.mockReturnValue(false);
+
+      const { getWalkGeoJsonFeature } = await import("./gpx");
+      const result = getWalkGeoJsonFeature("2024-09-15");
+
+      expect(result).toBeNull();
+    });
+
+    it("returns null when the GPX file has no LineString geometry", async () => {
+      mockExistsSync.mockReturnValue(true);
+      mockReadFileSync.mockReturnValue(
+        `<?xml version="1.0" encoding="UTF-8"?>
+<gpx xmlns="http://www.topografix.com/GPX/1/1" version="1.1">
+</gpx>`,
+      );
+
+      const { getWalkGeoJsonFeature } = await import("./gpx");
+      const result = getWalkGeoJsonFeature("2024-09-15");
+
+      expect(result).toBeNull();
+    });
+
+    it("returns a feature with the slug and date from the slug", async () => {
+      mockExistsSync.mockReturnValue(true);
+      mockReadFileSync.mockReturnValue(SAMPLE_GPX_WITH_NAME);
+
+      const { getWalkGeoJsonFeature } = await import("./gpx");
+      const result = getWalkGeoJsonFeature("2024-09-15");
+
+      expect(result?.properties.slug).toBe("2024-09-15");
+      expect(result?.properties.date).toBe("2024-09-15");
+    });
+
+    it("uses the GPX track name as the title when available", async () => {
+      mockExistsSync.mockReturnValue(true);
+      mockReadFileSync.mockReturnValue(SAMPLE_GPX_WITH_NAME);
+
+      const { getWalkGeoJsonFeature } = await import("./gpx");
+      const result = getWalkGeoJsonFeature("2024-09-15");
+
+      expect(result?.properties.title).toBe("Central Park Walk");
+    });
+
+    it("falls back to slug as the title when no track name is available", async () => {
+      mockExistsSync.mockReturnValue(true);
+      mockReadFileSync.mockReturnValue(SAMPLE_GPX_WITHOUT_NAME);
+
+      const { getWalkGeoJsonFeature } = await import("./gpx");
+      const result = getWalkGeoJsonFeature("2024-09-15");
+
+      expect(result?.properties.title).toBe("2024-09-15");
+    });
+
+    it("returns a valid WalkGeoJsonFeature shape with coordinates", async () => {
+      mockExistsSync.mockReturnValue(true);
+      mockReadFileSync.mockReturnValue(SAMPLE_GPX_WITH_NAME);
+
+      const { getWalkGeoJsonFeature } = await import("./gpx");
+      const result = getWalkGeoJsonFeature("2024-09-15");
+
+      expect(result?.type).toBe("Feature");
+      expect(result?.geometry.type).toBe("LineString");
+      expect(Array.isArray(result?.geometry.coordinates)).toBe(true);
+      expect(result?.geometry.coordinates.length).toBeGreaterThan(0);
+    });
+  });
+
   describe("getWalkGeoJsonFeatures", () => {
     it("returns an empty array when the GPX directory does not exist", async () => {
       mockExistsSync.mockReturnValue(false);
