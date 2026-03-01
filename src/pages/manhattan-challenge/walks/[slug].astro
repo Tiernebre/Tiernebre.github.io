@@ -65,6 +65,16 @@ const features: GeoJsonFeature[] = gpxFeature ? [gpxFeature] : [];
         <span class="stat-label">Neighborhoods</span>
         <span class="stat-value">{neighborhoodList}</span>
       </div>
+      {
+        entry.data.weather && (
+          <div class="stat">
+            <span class="stat-label">Weather</span>
+            <span class="stat-value">
+              {entry.data.weather.condition}, {entry.data.weather.temp_f}°F
+            </span>
+          </div>
+        )
+      }
     </div>
 
     <div class="walk-map">

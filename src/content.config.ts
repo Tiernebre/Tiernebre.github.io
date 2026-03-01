@@ -14,6 +14,12 @@ const manhattanChallenge = defineCollection({
     duration_minutes: z.number(),
     neighborhoods: z.array(z.string()),
     gpx_file: z.string(),
+    weather: z
+      .object({
+        temp_f: z.number(),
+        condition: z.string(),
+      })
+      .optional(),
   }),
 });
 

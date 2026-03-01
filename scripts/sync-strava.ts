@@ -4,6 +4,11 @@ import { exec } from "node:child_process";
 import fs from "node:fs";
 import http from "node:http";
 import path from "node:path";
+import {
+  type WeatherSnapshot,
+  wmoCodeToCondition,
+  findHourIndex,
+} from "../src/lib/weather.js";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -21,6 +26,7 @@ interface StravaActivity {
   start_date: string;
   distance: number;
   moving_time: number;
+  start_latlng?: [number, number];
 }
 
 interface StreamSet {
@@ -316,6 +322,53 @@ async function fetchStreams(
 }
 
 // ---------------------------------------------------------------------------
+// Weather
+// ---------------------------------------------------------------------------
+
+interface OpenMeteoResponse {
+  hourly: {
+    time: string[];
+    temperature_2m: number[];
+    weather_code: number[];
+  };
+}
+
+async function fetchWeather(
+  lat: number,
+  lon: number,
+  isoDateTime: string,
+): Promise<WeatherSnapshot | null> {
+  const date = isoDateTime.slice(0, 10);
+  const url =
+    `https://archive-api.open-meteo.com/v1/archive` +
+    `?latitude=${lat}&longitude=${lon}` +
+    `&start_date=${date}&end_date=${date}` +
+    `&hourly=temperature_2m,weather_code` +
+    `&temperature_unit=fahrenheit` +
+    `&timezone=UTC`;
+
+  const response = await fetch(url);
+  if (!response.ok) {
+    console.warn(
+      `  [warn] Weather fetch failed (${response.status}) — skipping`,
+    );
+    return null;
+  }
+
+  const data = (await response.json()) as OpenMeteoResponse;
+  const index = findHourIndex(data.hourly.time, isoDateTime);
+  if (index === -1) {
+    console.warn(`  [warn] No matching hour in weather data — skipping`);
+    return null;
+  }
+
+  return {
+    temp_f: Math.round(data.hourly.temperature_2m[index]!),
+    condition: wmoCodeToCondition(data.hourly.weather_code[index]!),
+  };
+}
+
+// ---------------------------------------------------------------------------
 // File generation
 // ---------------------------------------------------------------------------
 
@@ -379,9 +432,14 @@ function buildMdxStub(
   dateStr: string,
   distanceMeters: number,
   movingTimeSeconds: number,
+  weather?: WeatherSnapshot,
 ): string {
   const distanceMiles = (distanceMeters / 1609.344).toFixed(1);
   const durationMinutes = Math.round(movingTimeSeconds / 60);
+
+  const weatherBlock = weather
+    ? `weather:\n  temp_f: ${weather.temp_f}\n  condition: "${weather.condition}"\n`
+    : "";
 
   return (
     `---\n` +
@@ -392,6 +450,7 @@ function buildMdxStub(
     `duration_minutes: ${durationMinutes}\n` +
     `neighborhoods: []\n` +
     `gpx_file: "public/manhattan-challenge/gpx/${dateStr}.gpx"\n` +
+    weatherBlock +
     `---\n\n` +
     `Walk notes go here.\n`
   );
@@ -470,11 +529,19 @@ async function main(): Promise<void> {
       console.log(`  [skip] MDX already exists: ${dateStr}.mdx`);
       mdxSkipped += 1;
     } else {
+      let weather: WeatherSnapshot | undefined;
+      if (activity.start_latlng) {
+        const [lat, lon] = activity.start_latlng;
+        console.log(`  [weather] Fetching weather for ${dateStr}...`);
+        weather =
+          (await fetchWeather(lat, lon, activity.start_date)) ?? undefined;
+      }
       const mdxContent = buildMdxStub(
         activity.name,
         dateStr,
         activity.distance,
         activity.moving_time,
+        weather,
       );
       fs.writeFileSync(mdxPath, mdxContent, "utf-8");
       console.log(`  [write] MDX stub: ${dateStr}.mdx`);
