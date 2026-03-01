@@ -29,3 +29,7 @@ Personal portfolio/website built with Astro 5. Hosted via GitHub Pages (Tiernebr
 ## Git / GitHub
 
 - When creating pull requests, don't write a `Test plan` section.
+- Before committing and opening a pull request, always run the following checks in order and fix any failures before proceeding:
+  1. `npm run test` — all tests must pass
+  2. `npm run lint` — no lint errors
+  3. `npm run format:check` — code must be formatted correctly (run `npm run format` to fix)
