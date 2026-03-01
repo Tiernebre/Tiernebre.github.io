@@ -16,10 +16,12 @@
   },
   "dependencies": {
     "astro": "^5.17.1",
+    "leaflet": "^1.9.4",
     "open-props": "^1.7.23"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@types/leaflet": "^1.9.21",
     "eslint": "^10.0.2",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-astro": "^1.6.0",
