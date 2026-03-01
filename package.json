@@ -17,6 +17,7 @@
   "dependencies": {
     "@astrojs/mdx": "^4.3.13",
     "astro": "^5.17.1",
+    "dotenv": "^17.3.1",
     "leaflet": "^1.9.4",
     "open-props": "^1.7.23"
   },
@@ -28,6 +29,7 @@
     "eslint-plugin-astro": "^1.6.0",
     "prettier": "^3.8.1",
     "prettier-plugin-astro": "^0.14.1",
+    "tsx": "^4.21.0",
     "typescript-eslint": "^8.56.1",
     "vitest": "^4.0.18"
   }
