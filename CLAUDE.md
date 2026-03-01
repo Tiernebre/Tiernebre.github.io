@@ -26,3 +26,7 @@ Personal portfolio/website built with Astro 5. Hosted via GitHub Pages (Tiernebr
 - **Components**: Reusable `.astro` components in `src/components/`
 - **Static assets**: `public/` for files served as-is, `src/assets/` for processed assets
 
+## Git / GitHub
+
+- When creating pull requests, don't write a `Test plan` section.
+
