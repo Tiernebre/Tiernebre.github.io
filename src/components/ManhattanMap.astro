@@ -17,9 +17,10 @@ export interface GeoJsonFeature {
 interface Props {
   features: GeoJsonFeature[];
   fitBounds?: boolean;
+  interactive?: boolean;
 }
 
-const { features, fitBounds = false } = Astro.props;
+const { features, fitBounds = false, interactive = true } = Astro.props;
 const featuresJson = JSON.stringify(features);
 ---
 
@@ -27,6 +28,7 @@ const featuresJson = JSON.stringify(features);
   id="manhattan-map"
   data-features={featuresJson}
   data-fit-bounds={fitBounds ? "true" : "false"}
+  data-interactive={interactive ? "true" : "false"}
 >
 </div>
 
@@ -39,6 +41,7 @@ const featuresJson = JSON.stringify(features);
 
   const features = JSON.parse(mapEl.dataset.features ?? "[]");
   const shouldFitBounds = mapEl.dataset.fitBounds === "true";
+  const isInteractive = mapEl.dataset.interactive !== "false";
 
   const map = L.map("manhattan-map");
 
@@ -83,21 +86,23 @@ const featuresJson = JSON.stringify(features);
       timeZone: "UTC",
     });
 
-    polyline.on("click", function (e) {
-      L.popup()
-        .setLatLng(e.latlng)
-        .setContent(
-          '<div class="manhattan-map-popup">' +
-            "<p>" +
-            formattedDate +
-            "</p>" +
-            '<a href="/manhattan-challenge/walks/' +
-            props.slug +
-            '">View walk details &#x2192;</a>' +
-            "</div>",
-        )
-        .openOn(map);
-    });
+    if (isInteractive) {
+      polyline.on("click", function (e) {
+        L.popup()
+          .setLatLng(e.latlng)
+          .setContent(
+            '<div class="manhattan-map-popup">' +
+              "<p>" +
+              formattedDate +
+              "</p>" +
+              '<a href="/manhattan-challenge/walks/' +
+              props.slug +
+              '">View walk details &#x2192;</a>' +
+              "</div>",
+          )
+          .openOn(map);
+      });
+    }
   });
 
   if (shouldFitBounds && allLatLngs.length > 0) {
