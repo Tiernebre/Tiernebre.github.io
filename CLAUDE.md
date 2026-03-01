@@ -28,6 +28,7 @@ Personal portfolio/website built with Astro 5. Hosted via GitHub Pages (Tiernebr
 
 ## Writing code
 
+- Follow red-green / test-driven development when writing new code. Write failing tests and specs, then implement code such that the tests will then pass. Ensure near-100% code coverage at all costs.
 - Respect the formatting for all files types (markdown, astro, TS/JS, HTML/CSS, etc..). Leverage `npm run format` and `npm run format:check` to format your code per the project's spec.
 
 ## Git / GitHub
