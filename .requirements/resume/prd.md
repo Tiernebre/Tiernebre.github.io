@@ -42,19 +42,22 @@ website: https://tiernebre.com/
 ## Experience
 
 ### Meta · Software Engineer (E5; Senior)
-*June 2025 – Present*
+
+_June 2025 – Present_
 
 - Full-stack senior software engineer on Conversions Experience...
 
 ### Reddit · Senior Software Engineer
-*February 2022 – June 2025*
+
+_February 2022 – June 2025_
 
 - Lead Senior Web Front End Engineer on New Ad Formats...
 
 ## Education
 
 ### Boise State University · B.S. Computer Science
-*August 2014 – May 2018*
+
+_August 2014 – May 2018_
 
 - Graduated on the College of Engineering Dean's List...
 ```
@@ -104,10 +107,10 @@ Reading order:
 
 ### Files to create
 
-| File                          | Purpose                                                       |
-| ----------------------------- | ------------------------------------------------------------- |
-| `src/pages/resume.mdx`        | Resume content (frontmatter + markdown body)                  |
-| `src/layouts/ResumeLayout.astro` | Header, download button, print styles, content wrapper     |
+| File                             | Purpose                                                |
+| -------------------------------- | ------------------------------------------------------ |
+| `src/pages/resume.mdx`           | Resume content (frontmatter + markdown body)           |
+| `src/layouts/ResumeLayout.astro` | Header, download button, print styles, content wrapper |
 
 No separate item components needed — Markdown headings and bullets handle the structure.
 
