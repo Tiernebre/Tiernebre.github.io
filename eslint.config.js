@@ -5,7 +5,7 @@ import astro from "eslint-plugin-astro";
 import prettier from "eslint-config-prettier";
 
 export default tseslint.config(
-  { ignores: [".astro/", "dist/"] },
+  { ignores: [".astro/", ".claude/", "dist/"] },
   js.configs.recommended,
   ...tseslint.configs.recommended,
   ...astro.configs.recommended,

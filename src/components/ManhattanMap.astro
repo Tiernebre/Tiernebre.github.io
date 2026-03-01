@@ -22,96 +22,72 @@ const { features } = Astro.props;
 const featuresJson = JSON.stringify(features);
 ---
 
-<div id="manhattan-map"></div>
+<div id="manhattan-map" data-features={featuresJson}></div>
 
-<link
-  rel="stylesheet"
-  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-  integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-  crossorigin=""
-/>
+<script>
+  import L from "leaflet";
+  import "leaflet/dist/leaflet.css";
 
-<script is:inline define:vars={{ featuresJson }}>
-  (function () {
-    const features = JSON.parse(featuresJson);
+  const mapEl = document.getElementById("manhattan-map");
+  if (!mapEl) throw new Error("Map element not found");
 
-    function initMap() {
-      // Leaflet is loaded via CDN script below; wait for it
-      if (typeof window.L === "undefined") {
-        setTimeout(initMap, 50);
-        return;
-      }
+  const features = JSON.parse(mapEl.dataset.features ?? "[]");
 
-      const L = window.L;
-      const map = L.map("manhattan-map").setView([40.7831, -73.9712], 12);
+  const map = L.map("manhattan-map").setView([40.7831, -73.9712], 12);
 
-      L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        maxZoom: 19,
-        attribution:
-          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      }).addTo(map);
+  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    maxZoom: 19,
+    attribution:
+      '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+  }).addTo(map);
 
-      const polylineColor = "#e63946";
+  const polylineColor = "#e63946";
 
-      features.forEach(function (feature) {
-        if (
-          !feature.geometry ||
-          feature.geometry.type !== "LineString" ||
-          !feature.properties
-        ) {
-          return;
-        }
-
-        // Leaflet expects [lat, lng]; GeoJSON uses [lng, lat]
-        const latLngs = feature.geometry.coordinates.map(function (coord) {
-          return [coord[1], coord[0]];
-        });
-
-        const polyline = L.polyline(latLngs, {
-          color: polylineColor,
-          weight: 4,
-          opacity: 0.8,
-        }).addTo(map);
-
-        const props = feature.properties;
-        const formattedDate = new Date(props.date).toLocaleDateString("en-US", {
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-          timeZone: "UTC",
-        });
-
-        polyline.on("click", function (e) {
-          L.popup()
-            .setLatLng(e.latlng)
-            .setContent(
-              '<div class="manhattan-map-popup">' +
-                "<p>" +
-                formattedDate +
-                "</p>" +
-                '<a href="/manhattan-challenge/walks/' +
-                props.slug +
-                '">View walk details &#x2192;</a>' +
-                "</div>",
-            )
-            .openOn(map);
-        });
-      });
+  features.forEach(function (feature) {
+    if (
+      !feature.geometry ||
+      feature.geometry.type !== "LineString" ||
+      !feature.properties
+    ) {
+      return;
     }
 
-    if (document.readyState === "loading") {
-      document.addEventListener("DOMContentLoaded", initMap);
-    } else {
-      initMap();
-    }
-  })();
+    // Leaflet expects [lat, lng]; GeoJSON uses [lng, lat]
+    const latLngs = feature.geometry.coordinates.map(function (coord) {
+      return [coord[1], coord[0]];
+    });
+
+    const polyline = L.polyline(latLngs, {
+      color: polylineColor,
+      weight: 4,
+      opacity: 0.8,
+    }).addTo(map);
+
+    const props = feature.properties;
+    const formattedDate = new Date(props.date).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      timeZone: "UTC",
+    });
+
+    polyline.on("click", function (e) {
+      L.popup()
+        .setLatLng(e.latlng)
+        .setContent(
+          '<div class="manhattan-map-popup">' +
+            "<p>" +
+            formattedDate +
+            "</p>" +
+            '<a href="/manhattan-challenge/walks/' +
+            props.slug +
+            '">View walk details &#x2192;</a>' +
+            "</div>",
+        )
+        .openOn(map);
+    });
+  });
 </script>
-
-<script
-  is:inline
-  src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-  integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV/XN/WLcE="
-  crossorigin=""></script>
 
 <style>
   #manhattan-map {
@@ -121,17 +97,17 @@ const featuresJson = JSON.stringify(features);
   }
 
   #manhattan-map :global(.manhattan-map-popup) {
-    font-family: sans-serif;
+    font-family: var(--font-sans);
   }
 
   #manhattan-map :global(.manhattan-map-popup p) {
     margin: 0 0 0.5rem 0;
     font-size: 0.875rem;
-    color: #444;
+    color: var(--gray-7);
   }
 
   #manhattan-map :global(.manhattan-map-popup a) {
-    color: #e63946;
+    color: var(--red-7);
     text-decoration: none;
     font-weight: 600;
     font-size: 0.875rem;
