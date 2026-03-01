@@ -3,6 +3,7 @@ import { getCollection, render } from "astro:content";
 import Layout from "../../../layouts/Layout.astro";
 import ManhattanMap from "../../../components/ManhattanMap.astro";
 import type { GeoJsonFeature } from "../../../components/ManhattanMap.astro";
+import { getWalkGeoJsonFeature } from "../../../lib/gpx";
 
 export async function getStaticPaths() {
   const walks = await getCollection("manhattan-challenge");
@@ -39,17 +40,8 @@ const neighborhoodList =
     ? entry.data.neighborhoods.join(", ")
     : "None listed";
 
-const features: GeoJsonFeature[] = [
-  {
-    type: "Feature" as const,
-    geometry: { type: "LineString" as const, coordinates: [] },
-    properties: {
-      slug: entry.data.slug,
-      date: entry.data.date.toISOString().split("T")[0],
-      title: entry.data.title,
-    },
-  },
-];
+const gpxFeature = getWalkGeoJsonFeature(entry.data.slug);
+const features: GeoJsonFeature[] = gpxFeature ? [gpxFeature] : [];
 ---
 
 <Layout>
