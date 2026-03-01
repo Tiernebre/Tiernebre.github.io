@@ -231,12 +231,16 @@ async function refreshAccessToken(refreshToken: string): Promise<string> {
   return data.access_token;
 }
 
+const MANHATTAN_CHALLENGE_TAG = "#MC";
+
 async function fetchActivities(accessToken: string): Promise<StravaActivity[]> {
   const WALK_HIKE_TYPES = new Set(["Walk", "Hike"]);
   const activities: StravaActivity[] = [];
   let page = 1;
 
-  console.log("Fetching activities from Strava...");
+  console.log(
+    `Fetching activities from Strava (tagged "${MANHATTAN_CHALLENGE_TAG}")...`,
+  );
 
   while (true) {
     const url =
@@ -260,14 +264,16 @@ async function fetchActivities(accessToken: string): Promise<StravaActivity[]> {
       break;
     }
 
-    const filtered = page_activities.filter((a) =>
-      WALK_HIKE_TYPES.has(a.sport_type),
+    const filtered = page_activities.filter(
+      (a) =>
+        WALK_HIKE_TYPES.has(a.sport_type) &&
+        a.name.includes(MANHATTAN_CHALLENGE_TAG),
     );
     activities.push(...filtered);
     page += 1;
   }
 
-  console.log(`Found ${activities.length} walk/hike activities.`);
+  console.log(`Found ${activities.length} tagged walk/hike activities.`);
   return activities;
 }
 
