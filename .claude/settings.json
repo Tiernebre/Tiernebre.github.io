@@ -19,7 +19,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "FILE=$(jq -r '.tool_input.file_path') && npx prettier --write \"$FILE\" && npx eslint --fix \"$FILE\""
+            "command": "FILE=$(jq -r '.tool_input.file_path') && [[ \"$FILE\" == /Users/tiernebre/Projects/Tiernebre.github.io/* ]] && npx prettier --write \"$FILE\" && npx eslint --fix \"$FILE\" || true"
           },
           {
             "type": "command",
