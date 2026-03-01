@@ -1,0 +1,83 @@
+import { readFileSync, readdirSync, existsSync } from "node:fs";
+import { join, basename, extname } from "node:path";
+import { DOMParser } from "@xmldom/xmldom";
+import { gpx } from "@tmcw/togeojson";
+
+export interface WalkGeoJsonFeature {
+  type: "Feature";
+  geometry: {
+    type: "LineString";
+    coordinates: [number, number][];
+  };
+  properties: {
+    slug: string;
+    date: string; // ISO date string YYYY-MM-DD
+    title: string;
+  };
+}
+
+const GPX_DIR = join(process.cwd(), "public", "manhattan-challenge", "gpx");
+
+function slugFromFilename(filename: string): string {
+  return basename(filename, extname(filename));
+}
+
+function dateFromSlug(slug: string): string {
+  return slug;
+}
+
+export function getWalkGeoJsonFeatures(): WalkGeoJsonFeature[] {
+  if (!existsSync(GPX_DIR)) {
+    return [];
+  }
+
+  let files: string[];
+  try {
+    files = readdirSync(GPX_DIR).filter((f) => f.endsWith(".gpx"));
+  } catch {
+    return [];
+  }
+
+  if (files.length === 0) {
+    return [];
+  }
+
+  const parser = new DOMParser();
+  const features: WalkGeoJsonFeature[] = [];
+
+  for (const file of files) {
+    const filePath = join(GPX_DIR, file);
+    const content = readFileSync(filePath, "utf-8");
+    const doc = parser.parseFromString(content, "text/xml");
+    const collection = gpx(doc);
+
+    const slug = slugFromFilename(file);
+    const date = dateFromSlug(slug);
+
+    for (const feature of collection.features) {
+      if (feature.geometry && feature.geometry.type === "LineString") {
+        const rawTitle =
+          feature.properties &&
+          typeof feature.properties["name"] === "string" &&
+          feature.properties["name"].length > 0
+            ? feature.properties["name"]
+            : slug;
+
+        features.push({
+          type: "Feature",
+          geometry: {
+            type: "LineString",
+            coordinates: feature.geometry.coordinates as [number, number][],
+          },
+          properties: {
+            slug,
+            date,
+            title: rawTitle,
+          },
+        });
+      }
+    }
+  }
+
+  return features;
+}
