@@ -16,20 +16,10 @@ fi
 
 echo "==> Found ${NEW_GPX} new GPX file(s) and ${NEW_MDX} new MDX stub(s)."
 
-# 3. Create a dated branch (append time if it already exists)
-DATE=$(date +%Y-%m-%d)
-BRANCH="strava-sync-${DATE}"
-if git show-ref --verify --quiet "refs/heads/${BRANCH}"; then
-  BRANCH="${BRANCH}-$(date +%H%M%S)"
-fi
-
-echo "==> Creating branch: ${BRANCH}"
-git checkout -b "$BRANCH"
-
-# 4. Stage only sync output — never .env or other sensitive files
+# 3. Stage only sync output — never .env or other sensitive files
 git add public/manhattan-challenge/gpx/ src/content/manhattan-challenge/
 
-# 5. Build a conventional commit message
+# 4. Build a conventional commit message
 if [ "$NEW_MDX" -eq 1 ]; then
   COMMIT_MSG="content: add ${NEW_MDX} manhattan challenge walk from strava"
 else
@@ -38,12 +28,8 @@ fi
 
 git commit -m "$COMMIT_MSG"
 
-# 6. Push and open a PR
-echo "==> Pushing branch and opening PR..."
-git push -u origin "$BRANCH"
-
-gh pr create \
-  --title "$COMMIT_MSG" \
-  --body "Synced ${NEW_MDX} walk(s) and ${NEW_GPX} GPX file(s) from Strava via \`npm run strava:sync\`."
+# 5. Push to main
+echo "==> Pushing to main..."
+git push origin main
 
 echo "==> Done!"

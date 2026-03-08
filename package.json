@@ -14,7 +14,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "strava:sync": "tsx scripts/sync-strava.ts",
-    "strava:sync-pr": "bash scripts/strava-sync-pr.sh"
+    "strava:sync-push": "bash scripts/strava-sync-pr.sh"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.13",
