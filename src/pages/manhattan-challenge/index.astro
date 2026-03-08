@@ -129,6 +129,44 @@ const neighborhoods_visited = new Set(all_neighborhoods).size;
       </div>
     </section>
 
+    <section class="walks-section">
+      <h2>Walks</h2>
+      <div class="table-wrapper">
+        <table class="walks-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Title</th>
+              <th>Distance</th>
+              <th>Duration</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              sorted_by_date.map((entry) => {
+                const hours = Math.floor(entry.data.duration_minutes / 60);
+                const minutes = entry.data.duration_minutes % 60;
+                const duration =
+                  hours > 0 ? `${hours}h ${minutes}m` : `${minutes}m`;
+                return (
+                  <tr>
+                    <td>{formatDate(entry.data.date)}</td>
+                    <td>
+                      <a href={`/manhattan-challenge/walks/${entry.data.slug}`}>
+                        {entry.data.title}
+                      </a>
+                    </td>
+                    <td>{entry.data.distance_miles.toFixed(1)} mi</td>
+                    <td>{duration}</td>
+                  </tr>
+                );
+              })
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
+
     <section class="map-section">
       <h2>Walk Map</h2>
       <div class="map-container">
@@ -243,6 +281,56 @@ const neighborhoods_visited = new Set(all_neighborhoods).size;
     text-transform: uppercase;
     letter-spacing: 0.04em;
     font-weight: 500;
+  }
+
+  /* Walks table */
+  .walks-section {
+    margin-bottom: 2.5rem;
+  }
+
+  .table-wrapper {
+    overflow-x: auto;
+  }
+
+  .walks-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+  }
+
+  .walks-table th {
+    text-align: left;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--text-2);
+    font-weight: 600;
+    padding: 0.5rem 0.75rem;
+    border-bottom: 2px solid var(--surface-4);
+  }
+
+  .walks-table td {
+    padding: 0.6rem 0.75rem;
+    border-bottom: 1px solid var(--surface-3);
+    white-space: nowrap;
+  }
+
+  .walks-table td:nth-child(2) {
+    white-space: normal;
+  }
+
+  .walks-table tbody tr:hover {
+    background: var(--surface-1);
+  }
+
+  .walks-table a {
+    color: var(--red-7);
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .walks-table a:hover {
+    text-decoration: underline;
   }
 
   /* Map */
