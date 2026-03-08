@@ -38,3 +38,11 @@ Personal portfolio/website built with Astro 5. Hosted via GitHub Pages (Tiernebr
   1. `npm run test` — all tests must pass
   2. `npm run lint` — no lint errors
   3. `npm run format:check` — code must be formatted correctly (run `npm run format` to fix)
+
+## Workflow for Making Changes
+
+1. `git fetch origin && git worktree add <tmp-path> origin/main` before making any changes
+2. Do all work inside the worktree
+3. Commit and push from the worktree
+4. After finishing, `git checkout main` on the main repo and `git pull origin main`
+5. `git worktree remove <tmp-path>` to clean up
