@@ -451,8 +451,7 @@ function buildMdxStub(
     `neighborhoods: []\n` +
     `gpx_file: "public/manhattan-challenge/gpx/${dateStr}.gpx"\n` +
     weatherBlock +
-    `---\n\n` +
-    `Walk notes go here.\n`
+    `---\n`
   );
 }
 

@@ -53,11 +53,8 @@ duration_minutes: 72
 neighborhoods: []
 gpx_file: "public/manhattan-challenge/gpx/YYYY-MM-DD.gpx"
 ---
-
-Walk notes go here.
 ```
 
 After running the sync, edit each stub to:
 
 - Add entries to `neighborhoods: []`
-- Replace the placeholder body with your walk notes
