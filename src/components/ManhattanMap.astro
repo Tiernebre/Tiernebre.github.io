@@ -92,11 +92,11 @@ const featuresJson = JSON.stringify(features);
         L.popup()
           .setLatLng(e.latlng)
           .setContent(
-            '<div class="manhattan-map-popup">' +
-              "<p>" +
+            "<div>" +
+              '<p class="m-0 mb-2 text-sm text-gray-700">' +
               formattedDate +
               "</p>" +
-              '<a href="/manhattan-challenge/walks/' +
+              '<a class="text-sm font-semibold text-primary no-underline hover:underline" href="/manhattan-challenge/walks/' +
               props.slug +
               '">View walk details &#x2192;</a>' +
               "</div>",
@@ -112,22 +112,3 @@ const featuresJson = JSON.stringify(features);
     map.setView([40.7831, -73.9712], 12);
   }
 </script>
-
-<style>
-  #manhattan-map :global(.manhattan-map-popup p) {
-    margin: 0 0 0.5rem 0;
-    font-size: 0.875rem;
-    color: #374151;
-  }
-
-  #manhattan-map :global(.manhattan-map-popup a) {
-    color: #7c3aed;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 0.875rem;
-  }
-
-  #manhattan-map :global(.manhattan-map-popup a:hover) {
-    text-decoration: underline;
-  }
-</style>
