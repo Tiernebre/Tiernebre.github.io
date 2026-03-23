@@ -87,8 +87,13 @@ const { name, email, phone, website } = Astro.props.frontmatter;
   }
 
   .resume-body :global(ul) {
+    list-style: disc;
     margin: 0.5rem 0 0.75rem;
     padding-left: 1.25rem;
+  }
+
+  .resume-body :global(ul ul) {
+    list-style: circle;
   }
 
   .resume-body :global(li) {
