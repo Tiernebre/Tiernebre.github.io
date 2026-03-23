@@ -23,24 +23,23 @@ import Layout from "../layouts/Layout.astro";
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    font-family: var(--font-sans);
     text-align: center;
-    padding: var(--size-fluid-3);
+    padding: clamp(1rem, 2vw, 1.5rem);
   }
 
   h1 {
-    font-size: var(--font-size-fluid-2);
-    margin-block-end: var(--size-3);
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+    margin-block-end: 1rem;
   }
 
   p {
-    font-size: var(--font-size-2);
-    color: var(--gray-6);
-    margin-block: var(--size-2);
+    font-size: 1.125rem;
+    color: #666;
+    margin-block: 0.5rem;
   }
 
   a {
-    color: var(--blue-7);
+    color: #1d4ed8;
     text-decoration: none;
   }
 

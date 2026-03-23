@@ -22,8 +22,7 @@
     "@xmldom/xmldom": "^0.8.11",
     "astro": "^5.17.1",
     "dotenv": "^17.3.1",
-    "leaflet": "^1.9.4",
-    "open-props": "^1.7.23"
+    "leaflet": "^1.9.4"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

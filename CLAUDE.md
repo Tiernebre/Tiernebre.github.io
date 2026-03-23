@@ -20,7 +20,7 @@ Personal portfolio/website built with Astro 5. Hosted via GitHub Pages (Tiernebr
 ## Architecture
 
 - **Framework**: Astro 5 with TypeScript (strict mode, extends `astro/tsconfigs/strict`)
-- **Styling**: Scoped CSS in Astro components, using [Open Props](https://open-props.style/) for styling rules.
+- **Styling**: Scoped CSS in Astro components with a minimal CSS reset in `src/styles/global.css`.
 - **Routing**: File-based routing via `src/pages/`
 - **Layouts**: `src/layouts/Layout.astro` wraps pages using `<slot />`
 - **Components**: Reusable `.astro` components in `src/components/`
