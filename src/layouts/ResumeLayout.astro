@@ -24,15 +24,32 @@ const { name, email, phone, website } = Astro.props.frontmatter;
     <title>{name} — Resume</title>
   </head>
   <body>
-    <div class="resume-container">
-      <header class="resume-header">
-        <h1 class="resume-name">{name}</h1>
-        <p class="resume-contact">
-          <a href={`mailto:${email}`}>{email}</a> ·
-          <a href={`tel:${phone}`}>{phone}</a> ·
-          <a href={website}>{website}</a>
+    <div class="mx-auto max-w-7xl px-4 py-6">
+      <header class="mb-6">
+        <h1 class="text-3xl font-bold text-gray-900 mb-2 leading-none">
+          {name}
+        </h1>
+        <p class="resume-contact text-gray-500 text-lg mb-3">
+          <a
+            href={`mailto:${email}`}
+            class="text-indigo-600 underline underline-offset-2 hover:text-indigo-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 focus-visible:rounded-sm"
+            >{email}</a
+          > ·
+          <a
+            href={`tel:${phone}`}
+            class="text-indigo-600 underline underline-offset-2 hover:text-indigo-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 focus-visible:rounded-sm"
+            >{phone}</a
+          > ·
+          <a
+            href={website}
+            class="text-indigo-600 underline underline-offset-2 hover:text-indigo-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 focus-visible:rounded-sm"
+            >{website}</a
+          >
         </p>
-        <button class="resume-download-btn" onclick="window.print()">
+        <button
+          class="resume-download-btn text-sm px-3 py-1 bg-gray-900 text-white border-none rounded cursor-pointer hover:bg-gray-600"
+          onclick="window.print()"
+        >
           Download PDF
         </button>
       </header>
@@ -44,114 +61,60 @@ const { name, email, phone, website } = Astro.props.frontmatter;
 </html>
 
 <style>
-  .resume-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: var(--size-6) var(--size-4);
-  }
-
-  .resume-header {
-    margin-bottom: var(--size-6);
-  }
-
-  .resume-name {
-    font-size: var(--font-size-6);
-    font-weight: var(--font-weight-7);
-    color: var(--text-1);
-    margin: 0 0 var(--size-2);
-    line-height: var(--font-lineheight-1);
-  }
-
-  .resume-contact {
-    color: var(--text-2);
-    font-size: var(--font-size-2);
-    margin: 0 0 var(--size-3);
-  }
-
-  .resume-contact a {
-    color: var(--indigo-7);
-    text-decoration: underline;
-    text-underline-offset: var(--size-1);
-  }
-
-  .resume-contact a:hover {
-    color: var(--indigo-9);
-  }
-
-  .resume-contact a:focus-visible {
-    outline: 2px solid var(--indigo-7);
-    outline-offset: 2px;
-    border-radius: var(--radius-1);
-  }
-
-  .resume-download-btn {
-    font-size: var(--font-size-1);
-    padding: var(--size-1) var(--size-3);
-    background: var(--text-1);
-    color: var(--surface-1);
-    border: none;
-    border-radius: var(--radius-2);
-    cursor: pointer;
-  }
-
-  .resume-download-btn:hover {
-    background: var(--text-2);
-  }
-
   .resume-body :global(h2) {
-    font-size: var(--font-size-1);
-    font-weight: var(--font-weight-7);
-    color: var(--text-2);
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: #6b7280;
     text-transform: uppercase;
-    letter-spacing: var(--font-letterspacing-3);
-    border-bottom: 1px solid var(--surface-3);
-    padding-bottom: var(--size-1);
-    margin-top: var(--size-6);
-    margin-bottom: var(--size-3);
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid #d1d5db;
+    padding-bottom: 0.25rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
   }
 
   .resume-body :global(h3) {
-    font-size: var(--font-size-2);
-    font-weight: var(--font-weight-6);
-    color: var(--text-1);
-    margin-top: var(--size-4);
-    margin-bottom: var(--size-1);
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #111827;
+    margin-top: 1rem;
+    margin-bottom: 0.25rem;
   }
 
   .resume-body :global(em) {
     font-style: italic;
-    color: var(--text-2);
+    color: #6b7280;
   }
 
   .resume-body :global(ul) {
-    margin: var(--size-2) 0 var(--size-3);
-    padding-left: var(--size-5);
+    margin: 0.5rem 0 0.75rem;
+    padding-left: 1.25rem;
   }
 
   .resume-body :global(li) {
-    margin-bottom: var(--size-1);
-    line-height: var(--font-lineheight-3);
+    margin-bottom: 0.25rem;
+    line-height: 1.65;
   }
 
   .resume-body :global(p) {
-    margin: var(--size-2) 0;
-    line-height: var(--font-lineheight-3);
+    margin: 0.5rem 0;
+    line-height: 1.65;
   }
 
   .resume-body :global(a) {
-    color: var(--indigo-7);
+    color: #4f46e5;
     text-decoration: underline;
-    text-underline-offset: var(--size-1);
+    text-underline-offset: 0.125rem;
   }
 
   .resume-body :global(a:hover) {
-    color: var(--indigo-9);
+    color: #312e81;
   }
 
   .resume-body :global(a:focus-visible) {
-    outline: 2px solid var(--indigo-7);
+    outline: 2px solid #4f46e5;
     outline-offset: 2px;
-    border-radius: var(--radius-1);
+    border-radius: 2px;
   }
 
   @media print {

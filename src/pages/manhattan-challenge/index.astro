@@ -65,80 +65,148 @@ const neighborhoods_visited = new Set(all_neighborhoods).size;
 ---
 
 <Layout>
-  <main>
-    <header class="page-header">
-      <h1>Manhattan Challenge</h1>
-      <p class="subtitle">
+  <main class="mx-auto max-w-7xl px-6 pt-8 pb-16 text-gray-900">
+    <header class="mb-8">
+      <h1 class="text-4xl font-bold mb-2">Manhattan Challenge</h1>
+      <p class="text-base text-gray-500">
         Walking every block of Manhattan — tracking progress one walk at a time.
       </p>
     </header>
 
-    <section class="progress-section">
-      <div class="progress-label">
-        <span class="progress-pct">{progress_pct}% complete</span>
-        <span class="progress-miles"
+    <section class="mb-10">
+      <div class="flex justify-between items-baseline mb-2">
+        <span class="text-lg font-bold text-primary"
+          >{progress_pct}% complete</span
+        >
+        <span class="text-sm text-gray-500"
           >{total_distance} / {CHALLENGE_GOAL_MILES} mi</span
         >
       </div>
-      <div class="progress-bar-track">
+      <div class="w-full h-3.5 bg-gray-200 rounded-full overflow-hidden">
         <div
-          class="progress-bar-fill"
+          class="h-full bg-primary rounded-full transition-[width] duration-400 ease-out min-w-0.5"
           style={`width: ${Math.min(Number(progress_pct), 100)}%`}
         >
         </div>
       </div>
     </section>
 
-    <section class="stats-section">
-      <h2>Stats</h2>
-      <div class="stats-grid">
-        <div class="stat-card">
-          <span class="stat-value">{total_distance} mi</span>
-          <span class="stat-label">Total Distance</span>
+    <section class="mb-10">
+      <h2 class="text-xl font-semibold mb-4 text-gray-500">Stats</h2>
+      <div class="grid grid-cols-[repeat(auto-fill,minmax(180px,1fr))] gap-4">
+        <div
+          class="bg-gray-50 border border-gray-200 rounded-lg px-5 py-4 flex flex-col gap-1"
+        >
+          <span class="text-lg font-bold text-gray-900 leading-tight"
+            >{total_distance} mi</span
+          >
+          <span
+            class="text-xs text-gray-500 uppercase tracking-wide font-medium"
+            >Total Distance</span
+          >
         </div>
-        <div class="stat-card">
-          <span class="stat-value">{total_time}</span>
-          <span class="stat-label">Total Time</span>
+        <div
+          class="bg-gray-50 border border-gray-200 rounded-lg px-5 py-4 flex flex-col gap-1"
+        >
+          <span class="text-lg font-bold text-gray-900 leading-tight"
+            >{total_time}</span
+          >
+          <span
+            class="text-xs text-gray-500 uppercase tracking-wide font-medium"
+            >Total Time</span
+          >
         </div>
-        <div class="stat-card">
-          <span class="stat-value">{total_walks}</span>
-          <span class="stat-label">Total Walks</span>
+        <div
+          class="bg-gray-50 border border-gray-200 rounded-lg px-5 py-4 flex flex-col gap-1"
+        >
+          <span class="text-lg font-bold text-gray-900 leading-tight"
+            >{total_walks}</span
+          >
+          <span
+            class="text-xs text-gray-500 uppercase tracking-wide font-medium"
+            >Total Walks</span
+          >
         </div>
-        <div class="stat-card">
-          <span class="stat-value">{project_span}</span>
-          <span class="stat-label">Project Span</span>
+        <div
+          class="bg-gray-50 border border-gray-200 rounded-lg px-5 py-4 flex flex-col gap-1"
+        >
+          <span class="text-lg font-bold text-gray-900 leading-tight"
+            >{project_span}</span
+          >
+          <span
+            class="text-xs text-gray-500 uppercase tracking-wide font-medium"
+            >Project Span</span
+          >
         </div>
-        <div class="stat-card">
-          <span class="stat-value">{longest_walk}</span>
-          <span class="stat-label">Longest Walk</span>
+        <div
+          class="bg-gray-50 border border-gray-200 rounded-lg px-5 py-4 flex flex-col gap-1"
+        >
+          <span class="text-lg font-bold text-gray-900 leading-tight"
+            >{longest_walk}</span
+          >
+          <span
+            class="text-xs text-gray-500 uppercase tracking-wide font-medium"
+            >Longest Walk</span
+          >
         </div>
-        <div class="stat-card">
-          <span class="stat-value">{avg_distance} mi</span>
-          <span class="stat-label">Avg Distance</span>
+        <div
+          class="bg-gray-50 border border-gray-200 rounded-lg px-5 py-4 flex flex-col gap-1"
+        >
+          <span class="text-lg font-bold text-gray-900 leading-tight"
+            >{avg_distance} mi</span
+          >
+          <span
+            class="text-xs text-gray-500 uppercase tracking-wide font-medium"
+            >Avg Distance</span
+          >
         </div>
-        <div class="stat-card">
-          <span class="stat-value">{neighborhoods_visited}</span>
-          <span class="stat-label">Neighborhoods Visited</span>
+        <div
+          class="bg-gray-50 border border-gray-200 rounded-lg px-5 py-4 flex flex-col gap-1"
+        >
+          <span class="text-lg font-bold text-gray-900 leading-tight"
+            >{neighborhoods_visited}</span
+          >
+          <span
+            class="text-xs text-gray-500 uppercase tracking-wide font-medium"
+            >Neighborhoods Visited</span
+          >
         </div>
-        <div class="stat-card">
-          <span class="stat-value">
+        <div
+          class="bg-gray-50 border border-gray-200 rounded-lg px-5 py-4 flex flex-col gap-1"
+        >
+          <span class="text-lg font-bold text-gray-900 leading-tight">
             {most_recent_walk ? formatDate(most_recent_walk.data.date) : "N/A"}
           </span>
-          <span class="stat-label">Most Recent Walk</span>
+          <span
+            class="text-xs text-gray-500 uppercase tracking-wide font-medium"
+            >Most Recent Walk</span
+          >
         </div>
       </div>
     </section>
 
-    <section class="walks-section">
-      <h2>Walks</h2>
-      <div class="table-wrapper">
-        <table class="walks-table">
+    <section class="mb-10">
+      <h2 class="text-xl font-semibold mb-4 text-gray-500">Walks</h2>
+      <div class="overflow-x-auto">
+        <table class="w-full border-collapse text-sm">
           <thead>
             <tr>
-              <th>Date</th>
-              <th>Title</th>
-              <th>Distance</th>
-              <th>Duration</th>
+              <th
+                class="text-left text-xs uppercase tracking-wide text-gray-500 font-semibold px-3 py-2 border-b-2 border-gray-200"
+                >Date</th
+              >
+              <th
+                class="text-left text-xs uppercase tracking-wide text-gray-500 font-semibold px-3 py-2 border-b-2 border-gray-200"
+                >Title</th
+              >
+              <th
+                class="text-left text-xs uppercase tracking-wide text-gray-500 font-semibold px-3 py-2 border-b-2 border-gray-200"
+                >Distance</th
+              >
+              <th
+                class="text-left text-xs uppercase tracking-wide text-gray-500 font-semibold px-3 py-2 border-b-2 border-gray-200"
+                >Duration</th
+              >
             </tr>
           </thead>
           <tbody>
@@ -149,15 +217,24 @@ const neighborhoods_visited = new Set(all_neighborhoods).size;
                 const duration =
                   hours > 0 ? `${hours}h ${minutes}m` : `${minutes}m`;
                 return (
-                  <tr>
-                    <td>{formatDate(entry.data.date)}</td>
-                    <td>
-                      <a href={`/manhattan-challenge/walks/${entry.data.slug}`}>
+                  <tr class="hover:bg-gray-50">
+                    <td class="px-3 py-2.5 border-b border-gray-100 whitespace-nowrap">
+                      {formatDate(entry.data.date)}
+                    </td>
+                    <td class="px-3 py-2.5 border-b border-gray-100">
+                      <a
+                        href={`/manhattan-challenge/walks/${entry.data.slug}`}
+                        class="text-primary no-underline font-semibold hover:underline"
+                      >
                         {entry.data.title}
                       </a>
                     </td>
-                    <td>{entry.data.distance_miles.toFixed(1)} mi</td>
-                    <td>{duration}</td>
+                    <td class="px-3 py-2.5 border-b border-gray-100 whitespace-nowrap">
+                      {entry.data.distance_miles.toFixed(1)} mi
+                    </td>
+                    <td class="px-3 py-2.5 border-b border-gray-100 whitespace-nowrap">
+                      {duration}
+                    </td>
                   </tr>
                 );
               })
@@ -167,182 +244,13 @@ const neighborhoods_visited = new Set(all_neighborhoods).size;
       </div>
     </section>
 
-    <section class="map-section">
-      <h2>Walk Map</h2>
-      <div class="map-container">
+    <section class="mb-8">
+      <h2 class="text-xl font-semibold mb-4 text-gray-500">Walk Map</h2>
+      <div
+        class="w-full h-[560px] rounded-lg overflow-hidden border border-gray-200"
+      >
         <ManhattanMap features={features} />
       </div>
     </section>
   </main>
 </Layout>
-
-<style>
-  main {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 2rem 1.5rem 4rem;
-    font-family: var(--font-sans);
-    color: var(--text-1);
-  }
-
-  .page-header {
-    margin-bottom: 2rem;
-  }
-
-  h1 {
-    font-size: 2.25rem;
-    font-weight: 700;
-    margin: 0 0 0.5rem;
-  }
-
-  h2 {
-    font-size: 1.25rem;
-    font-weight: 600;
-    margin: 0 0 1rem;
-    color: var(--text-2);
-  }
-
-  .subtitle {
-    font-size: 1rem;
-    color: var(--text-2);
-    margin: 0;
-  }
-
-  /* Progress */
-  .progress-section {
-    margin-bottom: 2.5rem;
-  }
-
-  .progress-label {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    margin-bottom: 0.5rem;
-  }
-
-  .progress-pct {
-    font-size: 1.125rem;
-    font-weight: 700;
-    color: var(--red-7);
-  }
-
-  .progress-miles {
-    font-size: 0.875rem;
-    color: var(--text-2);
-  }
-
-  .progress-bar-track {
-    width: 100%;
-    height: 14px;
-    background: var(--surface-3);
-    border-radius: 999px;
-    overflow: hidden;
-  }
-
-  .progress-bar-fill {
-    height: 100%;
-    background: var(--red-7);
-    border-radius: 999px;
-    transition: width 0.4s ease;
-    min-width: 2px;
-  }
-
-  /* Stats */
-  .stats-section {
-    margin-bottom: 2.5rem;
-  }
-
-  .stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 1rem;
-  }
-
-  .stat-card {
-    background: var(--surface-1);
-    border: 1px solid var(--surface-4);
-    border-radius: 8px;
-    padding: 1rem 1.25rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-  }
-
-  .stat-value {
-    font-size: 1.125rem;
-    font-weight: 700;
-    color: var(--text-1);
-    line-height: 1.3;
-  }
-
-  .stat-label {
-    font-size: 0.75rem;
-    color: var(--text-2);
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    font-weight: 500;
-  }
-
-  /* Walks table */
-  .walks-section {
-    margin-bottom: 2.5rem;
-  }
-
-  .table-wrapper {
-    overflow-x: auto;
-  }
-
-  .walks-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.9rem;
-  }
-
-  .walks-table th {
-    text-align: left;
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    color: var(--text-2);
-    font-weight: 600;
-    padding: 0.5rem 0.75rem;
-    border-bottom: 2px solid var(--surface-4);
-  }
-
-  .walks-table td {
-    padding: 0.6rem 0.75rem;
-    border-bottom: 1px solid var(--surface-3);
-    white-space: nowrap;
-  }
-
-  .walks-table td:nth-child(2) {
-    white-space: normal;
-  }
-
-  .walks-table tbody tr:hover {
-    background: var(--surface-1);
-  }
-
-  .walks-table a {
-    color: var(--red-7);
-    text-decoration: none;
-    font-weight: 600;
-  }
-
-  .walks-table a:hover {
-    text-decoration: underline;
-  }
-
-  /* Map */
-  .map-section {
-    margin-bottom: 2rem;
-  }
-
-  .map-container {
-    width: 100%;
-    height: 560px;
-    border-radius: 8px;
-    overflow: hidden;
-    border: 1px solid var(--surface-4);
-  }
-</style>

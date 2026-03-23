@@ -3,48 +3,20 @@ import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout>
-  <main>
-    <h1>Under Construction</h1>
-    <p>Something is being built here. Check back soon!</p>
-    <p>
+  <main
+    class="flex flex-col items-center justify-center min-h-screen text-center p-8"
+  >
+    <h1 class="text-4xl font-bold mb-3">Under Construction</h1>
+    <p class="text-lg text-gray-500 my-2">
+      Something is being built here. Check back soon!
+    </p>
+    <p class="text-lg text-gray-500 my-2">
       In the meantime, find me on <a
         href="https://www.linkedin.com/in/tierney-brendan/"
         target="_blank"
-        rel="noopener noreferrer">LinkedIn</a
+        rel="noopener noreferrer"
+        class="text-blue-600 no-underline hover:underline">LinkedIn</a
       >.
     </p>
   </main>
 </Layout>
-
-<style>
-  main {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    font-family: var(--font-sans);
-    text-align: center;
-    padding: var(--size-fluid-3);
-  }
-
-  h1 {
-    font-size: var(--font-size-fluid-2);
-    margin-block-end: var(--size-3);
-  }
-
-  p {
-    font-size: var(--font-size-2);
-    color: var(--gray-6);
-    margin-block: var(--size-2);
-  }
-
-  a {
-    color: var(--blue-7);
-    text-decoration: none;
-  }
-
-  a:hover {
-    text-decoration: underline;
-  }
-</style>
