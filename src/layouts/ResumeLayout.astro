@@ -32,17 +32,17 @@ const { name, email, phone, website } = Astro.props.frontmatter;
         <p class="text-gray-500 text-lg mb-3">
           <a
             href={`mailto:${email}`}
-            class="text-indigo-600 underline underline-offset-2 hover:text-indigo-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 focus-visible:rounded-sm"
+            class="text-indigo-600 visited:text-indigo-600 underline underline-offset-2 hover:text-indigo-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 focus-visible:rounded-sm"
             >{email}</a
           > ·
           <a
             href={`tel:${phone}`}
-            class="text-indigo-600 underline underline-offset-2 hover:text-indigo-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 focus-visible:rounded-sm"
+            class="text-indigo-600 visited:text-indigo-600 underline underline-offset-2 hover:text-indigo-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 focus-visible:rounded-sm"
             >{phone}</a
           > ·
           <a
             href={website}
-            class="text-indigo-600 underline underline-offset-2 hover:text-indigo-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 focus-visible:rounded-sm"
+            class="text-indigo-600 visited:text-indigo-600 underline underline-offset-2 hover:text-indigo-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 focus-visible:rounded-sm"
             >{website}</a
           >
         </p>
@@ -54,7 +54,7 @@ const { name, email, phone, website } = Astro.props.frontmatter;
         </button>
       </header>
       <main
-        class="prose max-w-none prose-h2:text-sm prose-h2:font-bold prose-h2:text-gray-500 prose-h2:uppercase prose-h2:tracking-wide prose-h2:border-b prose-h2:border-gray-300 prose-h2:pb-1 prose-h2:mt-6 prose-h2:mb-3 prose-h3:text-lg prose-h3:font-semibold prose-h3:text-gray-900 prose-h3:mt-4 prose-h3:mb-1 prose-h3:print:break-after-avoid prose-em:italic prose-em:text-gray-500 prose-ul:list-disc prose-ul:my-2 prose-ul:mb-3 prose-ul:pl-5 prose-li:mb-1 prose-li:leading-relaxed prose-p:my-2 prose-p:leading-relaxed prose-a:text-indigo-600 prose-a:underline prose-a:underline-offset-1 hover:prose-a:text-indigo-900 focus-visible:prose-a:outline-2 focus-visible:prose-a:outline-offset-2 focus-visible:prose-a:outline-indigo-600 focus-visible:prose-a:rounded-sm print:prose-a:no-underline"
+        class="prose max-w-none prose-h2:text-sm prose-h2:font-bold prose-h2:text-gray-500 prose-h2:uppercase prose-h2:tracking-wide prose-h2:border-b prose-h2:border-gray-300 prose-h2:pb-1 prose-h2:mt-6 prose-h2:mb-3 prose-h3:text-lg prose-h3:font-semibold prose-h3:text-gray-900 prose-h3:mt-4 prose-h3:mb-1 prose-h3:print:break-after-avoid prose-em:italic prose-em:text-gray-500 prose-ul:list-disc prose-ul:my-2 prose-ul:mb-3 prose-ul:pl-5 prose-li:mb-1 prose-li:leading-relaxed prose-p:my-2 prose-p:leading-relaxed prose-a:text-indigo-600 visited:prose-a:text-indigo-600 prose-a:underline prose-a:underline-offset-1 hover:prose-a:text-indigo-900 focus-visible:prose-a:outline-2 focus-visible:prose-a:outline-offset-2 focus-visible:prose-a:outline-indigo-600 focus-visible:prose-a:rounded-sm print:prose-a:no-underline"
       >
         <slot />
       </main>
