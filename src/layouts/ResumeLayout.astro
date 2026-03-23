@@ -23,13 +23,13 @@ const { name, email, phone, website } = Astro.props.frontmatter;
     <meta name="generator" content={Astro.generator} />
     <title>{name} — Resume</title>
   </head>
-  <body>
+  <body class="print:bg-white print:text-black">
     <div class="mx-auto max-w-7xl px-4 py-6">
       <header class="mb-6">
         <h1 class="text-3xl font-bold text-gray-900 mb-2 leading-none">
           {name}
         </h1>
-        <p class="resume-contact text-gray-500 text-lg mb-3">
+        <p class="text-gray-500 text-lg mb-3">
           <a
             href={`mailto:${email}`}
             class="text-indigo-600 underline underline-offset-2 hover:text-indigo-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 focus-visible:rounded-sm"
@@ -47,102 +47,17 @@ const { name, email, phone, website } = Astro.props.frontmatter;
           >
         </p>
         <button
-          class="resume-download-btn text-sm px-3 py-1 bg-gray-900 text-white border-none rounded cursor-pointer hover:bg-gray-600"
+          class="text-sm px-3 py-1 bg-gray-900 text-white border-none rounded cursor-pointer hover:bg-gray-600 print:hidden"
           onclick="window.print()"
         >
           Download PDF
         </button>
       </header>
-      <main class="resume-body">
+      <main
+        class="prose max-w-none prose-h2:text-sm prose-h2:font-bold prose-h2:text-gray-500 prose-h2:uppercase prose-h2:tracking-wide prose-h2:border-b prose-h2:border-gray-300 prose-h2:pb-1 prose-h2:mt-6 prose-h2:mb-3 prose-h3:text-lg prose-h3:font-semibold prose-h3:text-gray-900 prose-h3:mt-4 prose-h3:mb-1 prose-h3:print:break-after-avoid prose-em:italic prose-em:text-gray-500 prose-ul:list-disc prose-ul:my-2 prose-ul:mb-3 prose-ul:pl-5 prose-li:mb-1 prose-li:leading-relaxed prose-p:my-2 prose-p:leading-relaxed prose-a:text-indigo-600 prose-a:underline prose-a:underline-offset-1 hover:prose-a:text-indigo-900 focus-visible:prose-a:outline-2 focus-visible:prose-a:outline-offset-2 focus-visible:prose-a:outline-indigo-600 focus-visible:prose-a:rounded-sm print:prose-a:no-underline"
+      >
         <slot />
       </main>
     </div>
   </body>
 </html>
-
-<style>
-  .resume-body :global(h2) {
-    font-size: 0.875rem;
-    font-weight: 700;
-    color: #6b7280;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    border-bottom: 1px solid #d1d5db;
-    padding-bottom: 0.25rem;
-    margin-top: 1.5rem;
-    margin-bottom: 0.75rem;
-  }
-
-  .resume-body :global(h3) {
-    font-size: 1.125rem;
-    font-weight: 600;
-    color: #111827;
-    margin-top: 1rem;
-    margin-bottom: 0.25rem;
-  }
-
-  .resume-body :global(em) {
-    font-style: italic;
-    color: #6b7280;
-  }
-
-  .resume-body :global(ul) {
-    list-style: disc;
-    margin: 0.5rem 0 0.75rem;
-    padding-left: 1.25rem;
-  }
-
-  .resume-body :global(ul ul) {
-    list-style: circle;
-  }
-
-  .resume-body :global(li) {
-    margin-bottom: 0.25rem;
-    line-height: 1.65;
-  }
-
-  .resume-body :global(p) {
-    margin: 0.5rem 0;
-    line-height: 1.65;
-  }
-
-  .resume-body :global(a) {
-    color: #4f46e5;
-    text-decoration: underline;
-    text-underline-offset: 0.125rem;
-  }
-
-  .resume-body :global(a:hover) {
-    color: #312e81;
-  }
-
-  .resume-body :global(a:focus-visible) {
-    outline: 2px solid #4f46e5;
-    outline-offset: 2px;
-    border-radius: 2px;
-  }
-
-  @media print {
-    html,
-    body {
-      background: white;
-      color: black;
-    }
-
-    .resume-download-btn {
-      display: none;
-    }
-
-    h3 {
-      break-after: avoid;
-    }
-
-    * {
-      box-shadow: none !important;
-    }
-
-    a[href]::after {
-      content: none;
-    }
-  }
-</style>
