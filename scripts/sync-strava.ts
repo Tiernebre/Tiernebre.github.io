@@ -430,6 +430,7 @@ function escapeXml(text: string): string {
 function buildMdxStub(
   activityName: string,
   dateStr: string,
+  slug: string,
   distanceMeters: number,
   movingTimeSeconds: number,
   weather?: WeatherSnapshot,
@@ -445,11 +446,11 @@ function buildMdxStub(
     `---\n` +
     `title: "${activityName.replace(/"/g, '\\"')}"\n` +
     `date: "${dateStr}"\n` +
-    `slug: "${dateStr}"\n` +
+    `slug: "${slug}"\n` +
     `distance_miles: ${distanceMiles}\n` +
     `duration_minutes: ${durationMinutes}\n` +
     `neighborhoods: []\n` +
-    `gpx_file: "public/manhattan-challenge/gpx/${dateStr}.gpx"\n` +
+    `gpx_file: "public/manhattan-challenge/gpx/${slug}.gpx"\n` +
     weatherBlock +
     `---\n`
   );
@@ -498,53 +499,79 @@ async function main(): Promise<void> {
 
   const activities = await fetchActivities(accessToken);
 
+  // Group activities by date and sort within each group by start time
+  // so that same-day walks get deterministic sequence numbers.
+  const byDate = new Map<string, StravaActivity[]>();
+  for (const activity of activities) {
+    const dateStr = formatDate(activity.start_date);
+    const group = byDate.get(dateStr) ?? [];
+    group.push(activity);
+    byDate.set(dateStr, group);
+  }
+  for (const group of byDate.values()) {
+    group.sort(
+      (a, b) =>
+        new Date(a.start_date).getTime() - new Date(b.start_date).getTime(),
+    );
+  }
+
   let gpxWritten = 0;
   let mdxCreated = 0;
   let gpxSkipped = 0;
   let mdxSkipped = 0;
 
-  for (const activity of activities) {
-    const dateStr = formatDate(activity.start_date);
-    const gpxPath = path.join(gpxDir, `${dateStr}.gpx`);
-    const mdxPath = path.join(mdxDir, `${dateStr}.mdx`);
+  for (const [dateStr, group] of byDate) {
+    for (let i = 0; i < group.length; i++) {
+      const activity = group[i]!;
+      // First walk of the day keeps the plain date slug for backward compatibility.
+      // Subsequent walks get a -2, -3, etc. suffix.
+      const slug = i === 0 ? dateStr : `${dateStr}-${i + 1}`;
+      const gpxPath = path.join(gpxDir, `${slug}.gpx`);
+      const mdxPath = path.join(mdxDir, `${slug}.mdx`);
 
-    // Write GPX file if not already present
-    if (fs.existsSync(gpxPath)) {
-      console.log(`  [skip] GPX already exists: ${dateStr}.gpx`);
-      gpxSkipped += 1;
-    } else {
-      console.log(
-        `  [fetch] Downloading streams for "${activity.name}" (${dateStr})...`,
-      );
-      const streams = await fetchStreams(accessToken, activity.id);
-      const gpxContent = buildGpx(activity.name, activity.start_date, streams);
-      fs.writeFileSync(gpxPath, gpxContent, "utf-8");
-      console.log(`  [write] GPX: ${dateStr}.gpx`);
-      gpxWritten += 1;
-    }
-
-    // Create MDX stub if not already present
-    if (fs.existsSync(mdxPath)) {
-      console.log(`  [skip] MDX already exists: ${dateStr}.mdx`);
-      mdxSkipped += 1;
-    } else {
-      let weather: WeatherSnapshot | undefined;
-      if (activity.start_latlng) {
-        const [lat, lon] = activity.start_latlng;
-        console.log(`  [weather] Fetching weather for ${dateStr}...`);
-        weather =
-          (await fetchWeather(lat, lon, activity.start_date)) ?? undefined;
+      // Write GPX file if not already present
+      if (fs.existsSync(gpxPath)) {
+        console.log(`  [skip] GPX already exists: ${slug}.gpx`);
+        gpxSkipped += 1;
+      } else {
+        console.log(
+          `  [fetch] Downloading streams for "${activity.name}" (${slug})...`,
+        );
+        const streams = await fetchStreams(accessToken, activity.id);
+        const gpxContent = buildGpx(
+          activity.name,
+          activity.start_date,
+          streams,
+        );
+        fs.writeFileSync(gpxPath, gpxContent, "utf-8");
+        console.log(`  [write] GPX: ${slug}.gpx`);
+        gpxWritten += 1;
       }
-      const mdxContent = buildMdxStub(
-        activity.name,
-        dateStr,
-        activity.distance,
-        activity.moving_time,
-        weather,
-      );
-      fs.writeFileSync(mdxPath, mdxContent, "utf-8");
-      console.log(`  [write] MDX stub: ${dateStr}.mdx`);
-      mdxCreated += 1;
+
+      // Create MDX stub if not already present
+      if (fs.existsSync(mdxPath)) {
+        console.log(`  [skip] MDX already exists: ${slug}.mdx`);
+        mdxSkipped += 1;
+      } else {
+        let weather: WeatherSnapshot | undefined;
+        if (activity.start_latlng) {
+          const [lat, lon] = activity.start_latlng;
+          console.log(`  [weather] Fetching weather for ${slug}...`);
+          weather =
+            (await fetchWeather(lat, lon, activity.start_date)) ?? undefined;
+        }
+        const mdxContent = buildMdxStub(
+          activity.name,
+          dateStr,
+          slug,
+          activity.distance,
+          activity.moving_time,
+          weather,
+        );
+        fs.writeFileSync(mdxPath, mdxContent, "utf-8");
+        console.log(`  [write] MDX stub: ${slug}.mdx`);
+        mdxCreated += 1;
+      }
     }
   }
 
