@@ -35,6 +35,24 @@ describe("gpx", () => {
     vi.clearAllMocks();
   });
 
+  describe("dateFromSlug", () => {
+    it("returns the date from a simple date slug", async () => {
+      const { dateFromSlug } = await import("./gpx");
+      expect(dateFromSlug("2024-09-15")).toBe("2024-09-15");
+    });
+
+    it("strips the sequence suffix from a multi-walk slug", async () => {
+      const { dateFromSlug } = await import("./gpx");
+      expect(dateFromSlug("2024-09-15-2")).toBe("2024-09-15");
+      expect(dateFromSlug("2024-09-15-3")).toBe("2024-09-15");
+    });
+
+    it("returns the input unchanged for non-matching strings", async () => {
+      const { dateFromSlug } = await import("./gpx");
+      expect(dateFromSlug("some-random-slug")).toBe("some-random-slug");
+    });
+  });
+
   describe("getWalkGeoJsonFeature", () => {
     it("returns null when the GPX file does not exist", async () => {
       mockExistsSync.mockReturnValue(false);
@@ -67,6 +85,17 @@ describe("gpx", () => {
       const result = getWalkGeoJsonFeature("2024-09-15");
 
       expect(result?.properties.slug).toBe("2024-09-15");
+      expect(result?.properties.date).toBe("2024-09-15");
+    });
+
+    it("extracts the date from a multi-walk slug with sequence suffix", async () => {
+      mockExistsSync.mockReturnValue(true);
+      mockReadFileSync.mockReturnValue(SAMPLE_GPX_WITH_NAME);
+
+      const { getWalkGeoJsonFeature } = await import("./gpx");
+      const result = getWalkGeoJsonFeature("2024-09-15-2");
+
+      expect(result?.properties.slug).toBe("2024-09-15-2");
       expect(result?.properties.date).toBe("2024-09-15");
     });
 
@@ -152,6 +181,24 @@ describe("gpx", () => {
 
       expect(result).toHaveLength(1);
       expect(result[0]?.properties.date).toBe("2024-09-15");
+    });
+
+    it("extracts date from a multi-walk filename with sequence suffix", async () => {
+      mockExistsSync.mockReturnValue(true);
+      mockReaddirSync.mockReturnValue([
+        "2024-09-15.gpx",
+        "2024-09-15-2.gpx",
+      ] as unknown as ReturnType<typeof readdirSync>);
+      mockReadFileSync.mockReturnValue(SAMPLE_GPX_WITH_NAME);
+
+      const { getWalkGeoJsonFeatures } = await import("./gpx");
+      const result = getWalkGeoJsonFeatures();
+
+      expect(result).toHaveLength(2);
+      expect(result[0]?.properties.slug).toBe("2024-09-15");
+      expect(result[0]?.properties.date).toBe("2024-09-15");
+      expect(result[1]?.properties.slug).toBe("2024-09-15-2");
+      expect(result[1]?.properties.date).toBe("2024-09-15");
     });
 
     it("uses the GPX track name as the title when available", async () => {

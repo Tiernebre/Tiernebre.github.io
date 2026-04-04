@@ -22,8 +22,9 @@ function slugFromFilename(filename: string): string {
   return basename(filename, extname(filename));
 }
 
-function dateFromSlug(slug: string): string {
-  return slug;
+export function dateFromSlug(slug: string): string {
+  const match = slug.match(/^(\d{4}-\d{2}-\d{2})(-\d+)?$/);
+  return match ? match[1] : slug;
 }
 
 export function getWalkGeoJsonFeature(slug: string): WalkGeoJsonFeature | null {
