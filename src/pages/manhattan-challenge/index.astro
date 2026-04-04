@@ -4,38 +4,12 @@ import Layout from "../../layouts/Layout.astro";
 import ManhattanMap from "../../components/ManhattanMap.astro";
 import { getWalkGeoJsonFeatures } from "../../lib/gpx";
 
-const CHALLENGE_GOAL_MILES = 1300;
-
 const entries = await getCollection("manhattan-challenge");
 const features = getWalkGeoJsonFeatures();
-
-// Compute stats
-const total_walks = entries.length;
-
-const total_distance_raw = entries.reduce(
-  (sum, e) => sum + e.data.distance_miles,
-  0,
-);
-const total_distance = total_distance_raw.toFixed(1);
-
-const total_duration_minutes = entries.reduce(
-  (sum, e) => sum + e.data.duration_minutes,
-  0,
-);
-const total_time_hours = Math.floor(total_duration_minutes / 60);
-const total_time_minutes = total_duration_minutes % 60;
-const total_time = `${total_time_hours}h ${total_time_minutes}m`;
-
-const progress_pct = (
-  (total_distance_raw / CHALLENGE_GOAL_MILES) *
-  100
-).toFixed(1);
 
 const sorted_by_date = [...entries].sort(
   (a, b) => a.data.date.getTime() - b.data.date.getTime(),
 );
-const earliest = sorted_by_date[0];
-const most_recent = sorted_by_date[sorted_by_date.length - 1];
 
 const formatDate = (d: Date) =>
   d.toLocaleDateString("en-US", {
@@ -44,24 +18,6 @@ const formatDate = (d: Date) =>
     day: "numeric",
     timeZone: "UTC",
   });
-
-const project_span =
-  entries.length > 0
-    ? `${formatDate(earliest.data.date)} – ${formatDate(most_recent.data.date)}`
-    : "N/A";
-
-const most_recent_walk = most_recent;
-
-const longest_walk_entry = entries.reduce((max, e) =>
-  e.data.distance_miles > max.data.distance_miles ? e : max,
-);
-const longest_walk = `${longest_walk_entry.data.distance_miles.toFixed(1)} mi — ${longest_walk_entry.data.title}`;
-
-const avg_distance =
-  entries.length > 0 ? (total_distance_raw / entries.length).toFixed(1) : "0.0";
-
-const all_neighborhoods = entries.flatMap((e) => e.data.neighborhoods);
-const neighborhoods_visited = new Set(all_neighborhoods).size;
 ---
 
 <Layout>
@@ -74,114 +30,11 @@ const neighborhoods_visited = new Set(all_neighborhoods).size;
     </header>
 
     <section class="mb-10">
-      <div class="flex justify-between items-baseline mb-2">
-        <span class="text-lg font-bold text-primary"
-          >{progress_pct}% complete</span
-        >
-        <span class="text-sm text-gray-500"
-          >{total_distance} / {CHALLENGE_GOAL_MILES} mi</span
-        >
-      </div>
-      <div class="w-full h-3.5 bg-gray-200 rounded-full overflow-hidden">
-        <div
-          class="h-full bg-primary rounded-full transition-[width] duration-400 ease-out min-w-0.5"
-          style={`width: ${Math.min(Number(progress_pct), 100)}%`}
-        >
-        </div>
-      </div>
-    </section>
-
-    <section class="mb-10">
-      <h2 class="text-xl font-semibold mb-4 text-gray-500">Stats</h2>
-      <div class="grid grid-cols-[repeat(auto-fill,minmax(180px,1fr))] gap-4">
-        <div
-          class="bg-gray-50 border border-gray-200 rounded-lg px-5 py-4 flex flex-col gap-1"
-        >
-          <span class="text-lg font-bold text-gray-900 leading-tight"
-            >{total_distance} mi</span
-          >
-          <span
-            class="text-xs text-gray-500 uppercase tracking-wide font-medium"
-            >Total Distance</span
-          >
-        </div>
-        <div
-          class="bg-gray-50 border border-gray-200 rounded-lg px-5 py-4 flex flex-col gap-1"
-        >
-          <span class="text-lg font-bold text-gray-900 leading-tight"
-            >{total_time}</span
-          >
-          <span
-            class="text-xs text-gray-500 uppercase tracking-wide font-medium"
-            >Total Time</span
-          >
-        </div>
-        <div
-          class="bg-gray-50 border border-gray-200 rounded-lg px-5 py-4 flex flex-col gap-1"
-        >
-          <span class="text-lg font-bold text-gray-900 leading-tight"
-            >{total_walks}</span
-          >
-          <span
-            class="text-xs text-gray-500 uppercase tracking-wide font-medium"
-            >Total Walks</span
-          >
-        </div>
-        <div
-          class="bg-gray-50 border border-gray-200 rounded-lg px-5 py-4 flex flex-col gap-1"
-        >
-          <span class="text-lg font-bold text-gray-900 leading-tight"
-            >{project_span}</span
-          >
-          <span
-            class="text-xs text-gray-500 uppercase tracking-wide font-medium"
-            >Project Span</span
-          >
-        </div>
-        <div
-          class="bg-gray-50 border border-gray-200 rounded-lg px-5 py-4 flex flex-col gap-1"
-        >
-          <span class="text-lg font-bold text-gray-900 leading-tight"
-            >{longest_walk}</span
-          >
-          <span
-            class="text-xs text-gray-500 uppercase tracking-wide font-medium"
-            >Longest Walk</span
-          >
-        </div>
-        <div
-          class="bg-gray-50 border border-gray-200 rounded-lg px-5 py-4 flex flex-col gap-1"
-        >
-          <span class="text-lg font-bold text-gray-900 leading-tight"
-            >{avg_distance} mi</span
-          >
-          <span
-            class="text-xs text-gray-500 uppercase tracking-wide font-medium"
-            >Avg Distance</span
-          >
-        </div>
-        <div
-          class="bg-gray-50 border border-gray-200 rounded-lg px-5 py-4 flex flex-col gap-1"
-        >
-          <span class="text-lg font-bold text-gray-900 leading-tight"
-            >{neighborhoods_visited}</span
-          >
-          <span
-            class="text-xs text-gray-500 uppercase tracking-wide font-medium"
-            >Neighborhoods Visited</span
-          >
-        </div>
-        <div
-          class="bg-gray-50 border border-gray-200 rounded-lg px-5 py-4 flex flex-col gap-1"
-        >
-          <span class="text-lg font-bold text-gray-900 leading-tight">
-            {most_recent_walk ? formatDate(most_recent_walk.data.date) : "N/A"}
-          </span>
-          <span
-            class="text-xs text-gray-500 uppercase tracking-wide font-medium"
-            >Most Recent Walk</span
-          >
-        </div>
+      <h2 class="text-xl font-semibold mb-4 text-gray-500">Walk Map</h2>
+      <div
+        class="w-full h-[560px] rounded-lg overflow-hidden border border-gray-200"
+      >
+        <ManhattanMap features={features} />
       </div>
     </section>
 
@@ -241,15 +94,6 @@ const neighborhoods_visited = new Set(all_neighborhoods).size;
             }
           </tbody>
         </table>
-      </div>
-    </section>
-
-    <section class="mb-8">
-      <h2 class="text-xl font-semibold mb-4 text-gray-500">Walk Map</h2>
-      <div
-        class="w-full h-[560px] rounded-lg overflow-hidden border border-gray-200"
-      >
-        <ManhattanMap features={features} />
       </div>
     </section>
   </main>
